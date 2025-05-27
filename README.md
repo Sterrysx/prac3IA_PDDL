@@ -1,93 +1,69 @@
-# Práctica 3 IA – Planificación de menús semanales (PDDL)
+# Weekly Menu PDDL Project
 
-Este repositorio implementa el modelado PDDL y los casos de prueba para la
-práctica de planificación. Se cubren **todas las extensiones (0 → 5)** y se
-incluye el **punto extra**: un generador automático de problemas.
+This repository provides two PDDL domains and corresponding problem definitions for a weekly menu planning task, alongside helper executables and scripts for generating and evaluating plans.
 
----
-
-## 📁 Jerarquía del proyecto
+## Repository Structure
 
 ```
-
-prac3IA\_PDDL/
-├── .gitignore
-├── README.md
+PRAC3IA_PDDL/         # Project root
+├── binaries/          # Platform executables and dependencies
+│   ├── ff.exe         # Fast-Forward planner executable
+│   ├── metricff.exe   # Metric version of Fast-Forward planner
+│   └── cygwin1.dll    # Cygwin runtime library required on Windows
 │
-├── domain.pddl            ← Dominio STRIPS + typing (niveles 0-3)
-├── domain\_metric.pddl     ← Igual que acima + funciones y \:metric (niv. 4-5)
+├── domain/            # PDDL domain definitions
+│   ├── domain.pddl         # Basic (non-metric) weekly-menu domain
+│   └── domain_metric.pddl  # Metric (numeric) extension of the domain
 │
-├── problems/              ← SOLO archivos de problema (.pddl)
-│   ├── basic/
-│   │   ├ basic01.pddl
-│   │   └ basic02.pddl
-│   ├── ext1\
-│   ├── ext2\
-│   ├── ext3\
-│   ├── ext4\
-│   └── ext5\
-│        └─ …              ← cada carpeta tendrá ≥2 ficheros generados
+├── problems/          # Problem instances organized by extension
+│   ├── basic/             # Extension 0–3 test problems
+│   │   └── menu-test1.pddl
+│   ├── ext1/              # Extension 1: "used" predicate tests
+│   ├── ext2/              # Extension 2: previous-day-type tests
+│   ├── ext3/              # Extension 3: forced-dish tests
+│   ├── ext4/              # Extension 4: numeric-fluent (calories)
+│   └── ext5/              # Extension 5: cost-optimization tests
 │
-├── tools/
-│   ├── gen\_problems.py    ← Genera problemas aleatorios (punto extra)
-│   └── run\_all.sh         ← Corre problemas/ y ejecuta los planificadores
+├── scripts/           # Helper scripts and generated output
+│   ├── generator/       # Script(s) to automatically produce problem files
+│   ├── run/             # Script(s) to invoke planners on domains/problems
+│   ├── dump_project.sh  # Script to dump file contents for review
+│   └── data.txt         # Last output from `dump_project.sh`
 │
-````
+├── .gitignore         # Specifies files and dirs ignored by Git
+└── README.md           # This overview and setup instructions
+```
 
----
+### Why this layout?
 
-## 🔧 Requisitos del entorno
+* **binaries/** keeps all external executables in one place, avoiding clutter in the root directory.
+* **domain/** separates PDDL domain definitions from problem instances.
+* **problems/** organizes test cases by feature extensions (ext1–ext5) for modular testing.
+* **scripts/** holds utility scripts (generation, execution, dumping) and their outputs, making automation easy to find and update.
+* **.gitignore** prevents temporary files (e.g. `data.txt`) and binaries from being committed unless desired.
 
-| Herramienta     | Uso                          |
-|-----------------|------------------------------|
-| **Fast-Forward v2.3** (`ff.exe`) | Extensiones 0 → 3 |
-| **Metric-FF** (`metricff.exe`)  | Extensiones 4 y 5 |
-| **Python 3.x** | Ejecutar `tools/gen_problems.py` |
-| Bash / PowerShell | Lanzar scripts y planificadores |
+With this structure, you can quickly locate or update any part of the planning pipeline, from domain models to test instances and execution tools.
 
-> Coloca `ff.exe`, `metricff.exe` y `cygwin1.dll` en una carpeta de tu  
-> `PATH` (por ejemplo `C:\PDDL\planificadores\`).
+## Running & Executing Problem Instances
 
----
-
-## 🚀 Cómo generar y ejecutar casos
-
-### 1. Generar problemas (punto extra)
+Before running any planner, ensure the `binaries/` folder is on your PATH:
 
 ```bash
-# Ejemplo: crear 2 problemas para la extensión 2
-python3 tools/gen_problems.py \
-    --extension ext2_no_type_repeat \
-    --count 2 \
-    --output problems/ext2_no_type_repeat/
+export PATH="$(pwd)/binaries:$PATH"
 ```
 
-El script añade los ficheros `ext2_01.pddl`, `ext2_02.pddl`…
+### Non‑metric (basic) domains
 
----
-
-### 2. Ejecutar un problema aislado
-
-**Niveles básicos (0-3):**
+To solve a basic problem (extensions 0–3), run:
 
 ```bash
-ff.exe -o domain.pddl -f problems/basic/basic01.pddl
+ff.exe -o domain/domain.pddl -f problems/basic/menu-test1.pddl > basic_plan.txt
 ```
 
-**Extensiones con métricas (4-5):**
+### Metric (numeric) domains
+
+To solve a metric problem (extensions 4–5), run:
 
 ```bash
-metricff.exe -o domain_metric.pddl -f problems/ext5_min_cost/ext5_01.pddl
+metricff.exe -o domain/domain_metric.pddl -f problems/ext4/your_problem.pddl > metric_plan.txt
 ```
-
----
-
-### 3. Ejecutar todos los tests
-
-```bash
-bash tools/run_all.sh
-```
-
-
-
-

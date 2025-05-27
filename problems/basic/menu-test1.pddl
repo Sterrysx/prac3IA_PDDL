@@ -1,67 +1,69 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;  SOLVABLE test for extensions 0-3                                ;;
+;;  TEST SOLUBLE per a extensions 0-3                              ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define (problem menu-test1)
-  (:domain weekly-menu)
+  (:domain menu-setmanal)
 
   ;;-------------------------------------------------------------------
-  ;;  OBJECTS
+  ;;  OBJECTES
   ;;-------------------------------------------------------------------
   (:objects
-     ;; weekdays
-     lun mar mie jue vie                                       - dia
+     ;; dies de la setmana
+     dilluns dimarts dimecres dijous divendres                  - dia
 
-     ;; dish categories
-     ensalada crema sopa pasta carne pescado                   - tipo
+     ;; categories de plats
+     amanida crema sopa pasta carn peix                         - tipus
 
-     ;; first-course dishes
-     ensaladaverano cremaagur paellavalencia
-     ensaladarusa pastamediterranea                            - primer
+     ;; primers plats
+     amanidavera cremacamp paellaval
+     amanidarusa pastamediterranea                              - primer
 
-     ;; second-course dishes
-     fabada asturiansalmon polloasado
-     lenguadoplancha lasagna                                   - segundo)
+     ;; segons plats
+     fabada salmonplanxa polloroast
+     llengadoplanxa lasanya                                     - segon)
 
   ;;-------------------------------------------------------------------
-  ;;  INITIAL STATE
+  ;;  ESTAT INICIAL
   ;;-------------------------------------------------------------------
   (:init
-    ;; day order
-    (next-day lun mar) (next-day mar mie)
-    (next-day mie jue) (next-day jue vie)
+    ;; ordre dels dies
+    (dia-seguent dilluns dimarts) (dia-seguent dimarts dimecres)
+    (dia-seguent dimecres dijous) (dia-seguent dijous divendres)
 
-    ;; dish-type mapping – FIRSTS
-    (dish-type ensaladaverano     ensalada)
-    (dish-type cremaagur          crema)
-    (dish-type paellavalencia     sopa)
-    (dish-type ensaladarusa       ensalada)
-    (dish-type pastamediterranea  pasta)
+    ;; mapping plat-tipus -- primers
+    (plat-tipus amanidavera      amanida)
+    (plat-tipus cremacamp        crema)
+    (plat-tipus paellaval        sopa)
+    (plat-tipus amanidarusa      amanida)
+    (plat-tipus pastamediterranea pasta)
 
-    ;; dish-type mapping – SECONDS
-    (dish-type fabada             carne)
-    (dish-type asturiansalmon     pescado)
-    (dish-type polloasado         carne)
-    (dish-type lenguadoplancha    pescado)
-    (dish-type lasagna            pasta)
+    ;; mapping plat-tipus -- segons
+    (plat-tipus fabada           carn)
+    (plat-tipus salmonplanxa     peix)
+    (plat-tipus polloroast       carn)
+    (plat-tipus llengadoplanxa   peix)
+    (plat-tipus lasanya          pasta)
 
-    ;; sample incompatibility
-    (incompatible paellavalencia asturiansalmon)
+    ;; incompatibilitat exemple
+    (incompatible paellaval salmonplanxa)
 
-    ;; seed “yesterday’s types” for ext-2
-    (prev-first-type  pasta)
-    (prev-second-type ensalada)
+    ;; tipus del dia anterior (ext-2)
+    (tipus-primer-anterior pasta)
+    (tipus-segon-anterior amanida)
 
-    ;; Monday starts
-    (current-day lun)
-    (needs-first  lun)
+    ;; inici de la planificacio
+    (dia-actual dilluns)
+    (necessita-primer dilluns)
 
-    ;; queue rest of week (activated day-by-day)
-    (needs-first  mar) (needs-first  mie)
-    (needs-first  jue) (needs-first  vie))
+    ;; cua de la resta de dies
+    (necessita-primer dimarts)
+    (necessita-primer dimecres)
+    (necessita-primer dijous)
+    (necessita-primer divendres))
 
   ;;-------------------------------------------------------------------
-  ;;  GOAL
+  ;;  OBJECTIU
   ;;-------------------------------------------------------------------
-  (:goal (planning-done))
+  (:goal (planificacio-completa))
 )

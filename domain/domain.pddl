@@ -1,159 +1,159 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;  WEEKLY-MENU ― BASIC DOMAIN  (ext.0-3)                           ;;
-;;  – No numeric fluents –                                          ;;
-;;  – Fully supports extensions 1-3                                 ;;
+;;  MENU SETMANAL -- DOMINI BASIC (ext.0-3)                        ;;
+;;  Sense fluents numerics                                        ;;
+;;  Dona suport complet a les extensions 1-3                       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(define (domain weekly-menu)
+(define (domain menu-setmanal)
   (:requirements :adl :typing :equality)
 
   ;;-------------------------------------------------------------------
-  ;;  TYPES
+  ;;  TIPUS
   ;;-------------------------------------------------------------------
   (:types
       dia
-      tipo
-      plato
-      primer  - plato
-      segundo - plato)
+      tipus
+      plat
+      primer - plat
+      segon  - plat)
 
   ;;-------------------------------------------------------------------
-  ;;  PREDICATES
+  ;;  PREDICATS
   ;;-------------------------------------------------------------------
   (:predicates
-      ;; static
-      (dish-type        ?p - plato  ?t - tipo)
-      (incompatible     ?p - primer ?s - segundo)
-      (next-day         ?d - dia    ?d2 - dia)
+      ;; estatics
+      (plat-tipus            ?p - plat   ?t - tipus)
+      (incompatible          ?p - primer ?s - segon)
+      (dia-seguent           ?d - dia    ?d2 - dia)
 
-      ;; dynamic
-      (current-day      ?d - dia)
-      (needs-first      ?d - dia)
-      (needs-second     ?d - dia)
+      ;; dinamics
+      (dia-actual            ?d - dia)
+      (necessita-primer      ?d - dia)
+      (necessita-segon       ?d - dia)
 
-      (assigned-first   ?d - dia ?p - primer)
-      (assigned-second  ?d - dia ?s - segundo)
-      (used             ?pl - plato)                ; ext-1
+      (primer-assignat       ?d - dia ?p - primer)
+      (segon-assignat        ?d - dia ?s - segon)
+      (usat                  ?pl - plat)               ; ext-1
 
-      (prev-first-type  ?t - tipo)                  ; ext-2
-      (prev-second-type ?t - tipo)                  ; ext-2
+      (tipus-primer-anterior ?t - tipus)               ; ext-2
+      (tipus-segon-anterior  ?t - tipus)               ; ext-2
 
-      ;; forced dishes (ext-3)
-      (require-first    ?d - dia ?p - primer)
-      (require-second   ?d - dia ?s - segundo)
+      ;; plats obligatoris (ext-3)
+      (primer-obligatori     ?d - dia ?p - primer)
+      (segon-obligatori      ?d - dia ?s - segon)
 
-      (planning-done))
+      (planificacio-completa))
 
   ;;-------------------------------------------------------------------
-  ;;  ACTIONS
+  ;;  ACCIONS
   ;;-------------------------------------------------------------------
 
-  ;; ――― choose FIRST course (no requirement) ―――
-  (:action choose-first-free
-    :parameters (?p  - primer
+  ;; -- triar PRIMER sense obligacio --
+  (:action tria-primer-lliure
+    :parameters (?p - primer
+                 ?d - dia
+                 ?t - tipus
+                 ?tp - tipus)
+    :precondition (and
+        (dia-actual ?d)
+        (necessita-primer ?d)
+        (plat-tipus ?p ?t)
+        (tipus-primer-anterior ?tp)
+        (not (= ?t ?tp))
+        (not (usat ?p))
+        (forall (?r - primer) (not (primer-obligatori ?d ?r))))
+    :effect (and
+        (primer-assignat ?d ?p)
+        (not (necessita-primer ?d))
+        (necessita-segon ?d)
+        (usat ?p)))
+
+  ;; -- triar PRIMER obligatori --
+  (:action tria-primer-obligatori
+    :parameters (?p - primer
+                 ?d - dia
+                 ?t - tipus
+                 ?tp - tipus)
+    :precondition (and
+        (dia-actual ?d) (necessita-primer ?d)
+        (plat-tipus ?p ?t)
+        (tipus-primer-anterior ?tp) (not (= ?t ?tp))
+        (not (usat ?p))
+        (primer-obligatori ?d ?p))
+    :effect (and
+        (primer-assignat ?d ?p)
+        (not (necessita-primer ?d))
+        (necessita-segon ?d)
+        (usat ?p)))
+
+  ;; -- triar SEGON sense obligacio --
+  (:action tria-segon-lliure
+    :parameters (?s  - segon
                  ?d  - dia
-                 ?t  - tipo
-                 ?tp - tipo)
+                 ?pf - primer
+                 ?ts  - tipus
+                 ?tps - tipus)
     :precondition (and
-        (current-day ?d)
-        (needs-first ?d)
-        (dish-type ?p ?t)
-        (prev-first-type ?tp)              ;; yesterday’s first-type
-        (not (= ?t ?tp))                   ;; ext-2
-        (not (used ?p))                    ;; ext-1
-        (forall (?r - primer) (not (require-first ?d ?r))))
-    :effect (and
-        (assigned-first ?d ?p)
-        (not (needs-first ?d))
-        (needs-second ?d)
-        (used ?p)))
-
-  ;; ――― choose FIRST course (forced) ―――
-  (:action choose-first-required
-    :parameters (?p  - primer
-                 ?d  - dia
-                 ?t  - tipo
-                 ?tp - tipo)
-    :precondition (and
-        (current-day ?d) (needs-first ?d)
-        (dish-type ?p ?t)
-        (prev-first-type ?tp) (not (= ?t ?tp))
-        (not (used ?p))
-        (require-first ?d ?p))
-    :effect (and
-        (assigned-first ?d ?p)
-        (not (needs-first ?d))
-        (needs-second ?d)
-        (used ?p)))
-
-  ;; ――― choose SECOND course (no requirement) ―――
-  (:action choose-second-free
-    :parameters (?s   - segundo
-                 ?d   - dia
-                 ?pf  - primer
-                 ?ts  - tipo
-                 ?tps - tipo)
-    :precondition (and
-        (current-day ?d) (needs-second ?d)
-        (assigned-first ?d ?pf)
-        (dish-type ?s ?ts)
-        (prev-second-type ?tps)            ;; yesterday’s second-type
-        (not (= ?ts ?tps))                 ;; ext-2
-        (not (incompatible ?pf ?s))
-        (not (used ?s))                    ;; ext-1
-        (forall (?r - segundo) (not (require-second ?d ?r))))
-    :effect (and
-        (assigned-second ?d ?s)
-        (not (needs-second ?d))
-        (used ?s)))
-
-  ;; ――― choose SECOND course (forced) ―――
-  (:action choose-second-required
-    :parameters (?s   - segundo
-                 ?d   - dia
-                 ?pf  - primer
-                 ?ts  - tipo
-                 ?tps - tipo)
-    :precondition (and
-        (current-day ?d) (needs-second ?d)
-        (assigned-first ?d ?pf)
-        (dish-type ?s ?ts)
-        (prev-second-type ?tps)
+        (dia-actual ?d) (necessita-segon ?d)
+        (primer-assignat ?d ?pf)
+        (plat-tipus ?s ?ts)
+        (tipus-segon-anterior ?tps)
         (not (= ?ts ?tps))
         (not (incompatible ?pf ?s))
-        (not (used ?s))
-        (require-second ?d ?s))
+        (not (usat ?s))
+        (forall (?r - segon) (not (segon-obligatori ?d ?r))))
     :effect (and
-        (assigned-second ?d ?s)
-        (not (needs-second ?d))
-        (used ?s)))
+        (segon-assignat ?d ?s)
+        (not (necessita-segon ?d))
+        (usat ?s)))
 
-  ;; ――― close an ordinary day (Mon-Thu) ―――
-  (:action finalize-day
+  ;; -- triar SEGON obligatori --
+  (:action tria-segon-obligatori
+    :parameters (?s  - segon
+                 ?d  - dia
+                 ?pf - primer
+                 ?ts  - tipus
+                 ?tps - tipus)
+    :precondition (and
+        (dia-actual ?d) (necessita-segon ?d)
+        (primer-assignat ?d ?pf)
+        (plat-tipus ?s ?ts)
+        (tipus-segon-anterior ?tps)
+        (not (= ?ts ?tps))
+        (not (incompatible ?pf ?s))
+        (not (usat ?s))
+        (segon-obligatori ?d ?s))
+    :effect (and
+        (segon-assignat ?d ?s)
+        (not (necessita-segon ?d))
+        (usat ?s)))
+
+  ;; -- finalitzar dia (dilluns-dijous) --
+  (:action finalitza-dia
     :parameters (?d  - dia
                  ?dn - dia
-                 ?pf - primer ?ps - segundo
-                 ?tf - tipo   ?ts - tipo)
+                 ?pf - primer ?ps - segon
+                 ?tf - tipus  ?ts - tipus)
     :precondition (and
-        (current-day ?d)
-        (assigned-first  ?d ?pf) (dish-type ?pf ?tf)
-        (assigned-second ?d ?ps) (dish-type ?ps ?ts)
-        (next-day ?d ?dn))
+        (dia-actual ?d)
+        (primer-assignat ?d ?pf) (plat-tipus ?pf ?tf)
+        (segon-assignat  ?d ?ps) (plat-tipus ?ps ?ts)
+        (dia-seguent ?d ?dn))
     :effect (and
-        (not (current-day ?d)) (current-day ?dn)
-        (prev-first-type  ?tf)             ;; remember today’s types
-        (prev-second-type ?ts)
-        (needs-first ?dn)))
+        (not (dia-actual ?d)) (dia-actual ?dn)
+        (tipus-primer-anterior ?tf)
+        (tipus-segon-anterior  ?ts)
+        (necessita-primer ?dn)))
 
-  ;; ――― finish the week (Friday) ―――
-  (:action finish-planning
-    :parameters (?d  - dia ?pf - primer ?ps - segundo)
+  ;; -- acabar setmana (divendres) --
+  (:action fi-setmana
+    :parameters (?d  - dia ?pf - primer ?ps - segon)
     :precondition (and
-        (current-day ?d)
-        (assigned-first  ?d ?pf)
-        (assigned-second ?d ?ps)
-        (forall (?x - dia) (not (next-day ?d ?x))))
+        (dia-actual ?d)
+        (primer-assignat ?d ?pf)
+        (segon-assignat  ?d ?ps)
+        (forall (?x - dia) (not (dia-seguent ?d ?x))))
     :effect (and
-        (planning-done)
-        (not (current-day ?d))))
+        (planificacio-completa)
+        (not (dia-actual ?d))))
 )

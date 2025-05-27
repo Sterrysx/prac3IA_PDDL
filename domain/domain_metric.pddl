@@ -1,160 +1,145 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;  WEEKLY-MENU ― METRIC DOMAIN  (ext.4-5)
-;;  – Adds numeric fluents & optimisation –                       
+;;  MENU SETMANAL -- DOMINI METRIC (ext.4-5)                       ;;
+;;  Fluents numerics i minimitzacio de cost                        ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(define (domain weekly-menu-metric)
+(define (domain menu-setmanal-metric)
   (:requirements :adl :typing :equality :fluents)
 
   ;;-------------------------------------------------------------------
-  ;;  TYPES
+  ;;  TIPUS
   ;;-------------------------------------------------------------------
-  (:types dia tipo plato primer - plato segundo - plato)
+  (:types dia tipus plat primer - plat segon - plat)
 
   ;;-------------------------------------------------------------------
-  ;;  NUMERIC FLUENTS
+  ;;  FLUENTS NUMERICS
   ;;-------------------------------------------------------------------
   (:functions
-      (calories ?p - plato)          ; static per dish
-      (price    ?p - plato)          ; static per dish
-      (current-calories)             ; running total for the day
-      (total-cost)                   ; optimisation target (ext-5)
-  )
+      (calories ?p - plat)
+      (preu     ?p - plat)
+      (calories-actuals)
+      (cost-total))
 
   ;;-------------------------------------------------------------------
-  ;;  PREDICATES  (same semantics as basic domain)
+  ;;  PREDICATS
   ;;-------------------------------------------------------------------
   (:predicates
-      (dish-type        ?p - plato ?t - tipo)
-      (incompatible     ?p - primer ?s - segundo)
-      (next-day         ?d - dia    ?d2 - dia)
+      (plat-tipus            ?p - plat ?t - tipus)
+      (incompatible          ?p - primer ?s - segon)
+      (dia-seguent           ?d - dia    ?d2 - dia)
 
-      (current-day      ?d - dia)
-      (needs-first      ?d - dia)
-      (needs-second     ?d - dia)
+      (dia-actual            ?d - dia)
+      (necessita-primer      ?d - dia)
+      (necessita-segon       ?d - dia)
 
-      (assigned-first   ?d - dia ?p - primer)
-      (assigned-second  ?d - dia ?s - segundo)
-      (used             ?pl - plato)
+      (primer-assignat       ?d - dia ?p - primer)
+      (segon-assignat        ?d - dia ?s - segon)
+      (usat                  ?pl - plat)
 
-      (prev-first-type  ?t - tipo)
-      (prev-second-type ?t - tipo)
+      (tipus-primer-anterior ?t - tipus)
+      (tipus-segon-anterior  ?t - tipus)
 
-      (require-first    ?d - dia ?p - primer)
-      (require-second   ?d - dia ?s - segundo)
+      (primer-obligatori     ?d - dia ?p - primer)
+      (segon-obligatori      ?d - dia ?s - segon)
 
-      (planning-done)
-  )
+      (planificacio-completa))
 
   ;;-------------------------------------------------------------------
-  ;;  ACTIONS  (identical control-flow, with numeric effects)
+  ;;  ACCIONS (iguals al domini basic pero amb efectes numerics)
   ;;-------------------------------------------------------------------
 
-  (:action choose-first-free
-    :parameters (?p  - primer ?d - dia ?t - tipo ?tp - tipo)
+  (:action tria-primer-lliure
+    :parameters (?p - primer ?d - dia ?t - tipus ?tp - tipus)
     :precondition (and
-        (current-day ?d) (needs-first ?d)
-        (dish-type ?p ?t) (prev-first-type ?tp)
-        (not (= ?t ?tp)) (not (used ?p))
-        (forall (?r - primer) (not (require-first ?d ?r)))
-    )
+        (dia-actual ?d) (necessita-primer ?d)
+        (plat-tipus ?p ?t) (tipus-primer-anterior ?tp)
+        (not (= ?t ?tp)) (not (usat ?p))
+        (forall (?r - primer) (not (primer-obligatori ?d ?r))))
     :effect (and
-        (increase (current-calories) (calories ?p))
-        (increase (total-cost)       (price    ?p))
-        (assigned-first ?d ?p)
-        (not (needs-first ?d)) (needs-second ?d)
-        (used ?p)
-    )
-  )
+        (increase (calories-actuals) (calories ?p))
+        (increase (cost-total)       (preu     ?p))
+        (primer-assignat ?d ?p)
+        (not (necessita-primer ?d)) (necessita-segon ?d)
+        (usat ?p)))
 
-  (:action choose-first-required
-    :parameters (?p - primer ?d - dia ?t - tipo ?tp - tipo)
+  (:action tria-primer-obligatori
+    :parameters (?p - primer ?d - dia ?t - tipus ?tp - tipus)
     :precondition (and
-        (current-day ?d) (needs-first ?d)
-        (dish-type ?p ?t) (prev-first-type ?tp)
-        (not (= ?t ?tp)) (not (used ?p))
-        (require-first ?d ?p)
-    )
+        (dia-actual ?d) (necessita-primer ?d)
+        (plat-tipus ?p ?t) (tipus-primer-anterior ?tp)
+        (not (= ?t ?tp)) (not (usat ?p))
+        (primer-obligatori ?d ?p))
     :effect (and
-        (increase (current-calories) (calories ?p))
-        (increase (total-cost)       (price    ?p))
-        (assigned-first ?d ?p)
-        (not (needs-first ?d)) (needs-second ?d)
-        (used ?p)
-    )
-  )
+        (increase (calories-actuals) (calories ?p))
+        (increase (cost-total)       (preu     ?p))
+        (primer-assignat ?d ?p)
+        (not (necessita-primer ?d)) (necessita-segon ?d)
+        (usat ?p)))
 
-  (:action choose-second-free
-    :parameters (?s - segundo ?d - dia ?pf - primer)
+  (:action tria-segon-lliure
+    :parameters (?s - segon ?d - dia ?pf - primer
+                 ?ts - tipus ?tps - tipus)
     :precondition (and
-        (current-day ?d) (needs-second ?d)
-        (assigned-first ?d ?pf)
+        (dia-actual ?d) (necessita-segon ?d)
+        (primer-assignat ?d ?pf)
+        (plat-tipus ?s ?ts) (tipus-segon-anterior ?tps)
+        (not (= ?ts ?tps))
         (not (incompatible ?pf ?s))
-        (not (used ?s))
-        (forall (?r - segundo) (not (require-second ?d ?r)))
-    )
+        (not (usat ?s))
+        (forall (?r - segon) (not (segon-obligatori ?d ?r))))
     :effect (and
-        (increase (current-calories) (calories ?s))
-        (increase (total-cost)       (price    ?s))
-        (assigned-second ?d ?s)
-        (not (needs-second ?d))
-        (used ?s)
-    )
-  )
+        (increase (calories-actuals) (calories ?s))
+        (increase (cost-total)       (preu     ?s))
+        (segon-assignat ?d ?s)
+        (not (necessita-segon ?d))
+        (usat ?s)))
 
-  (:action choose-second-required
-    :parameters (?s - segundo ?d - dia ?pf - primer)
+  (:action tria-segon-obligatori
+    :parameters (?s - segon ?d - dia ?pf - primer
+                 ?ts - tipus ?tps - tipus)
     :precondition (and
-        (current-day ?d) (needs-second ?d)
-        (assigned-first ?d ?pf)
+        (dia-actual ?d) (necessita-segon ?d)
+        (primer-assignat ?d ?pf)
+        (plat-tipus ?s ?ts) (tipus-segon-anterior ?tps)
+        (not (= ?ts ?tps))
         (not (incompatible ?pf ?s))
-        (not (used ?s))
-        (require-second ?d ?s)
-    )
+        (not (usat ?s))
+        (segon-obligatori ?d ?s))
     :effect (and
-        (increase (current-calories) (calories ?s))
-        (increase (total-cost)       (price    ?s))
-        (assigned-second ?d ?s)
-        (not (needs-second ?d))
-        (used ?s)
-    )
-  )
+        (increase (calories-actuals) (calories ?s))
+        (increase (cost-total)       (preu     ?s))
+        (segon-assignat ?d ?s)
+        (not (necessita-segon ?d))
+        (usat ?s)))
 
-  (:action finalize-day
-    :parameters (?d  - dia  ?dn - dia
-                 ?pf - primer ?ps - segundo
-                 ?tf - tipo   ?ts - tipo)
+  (:action finalitza-dia
+    :parameters (?d  - dia ?dn - dia
+                 ?pf - primer ?ps - segon
+                 ?tf - tipus  ?ts - tipus)
     :precondition (and
-        (current-day ?d)
-        (assigned-first  ?d ?pf) (dish-type ?pf ?tf)
-        (assigned-second ?d ?ps) (dish-type ?ps ?ts)
-        (next-day ?d ?dn)
-        ;; ext-4: daily calories in range
-        (>= (current-calories) 1000)
-        (<= (current-calories) 1500)
-    )
+        (dia-actual ?d)
+        (primer-assignat ?d ?pf) (plat-tipus ?pf ?tf)
+        (segon-assignat  ?d ?ps) (plat-tipus ?ps ?ts)
+        (dia-seguent ?d ?dn)
+        (>= (calories-actuals) 1000)
+        (<= (calories-actuals) 1500))
     :effect (and
-        (assign (current-calories) 0)
-        (not (current-day ?d)) (current-day ?dn)
-        (prev-first-type  ?tf)
-        (prev-second-type ?ts)
-        (needs-first ?dn)
-    )
-  )
+        (assign (calories-actuals) 0)
+        (not (dia-actual ?d)) (dia-actual ?dn)
+        (tipus-primer-anterior ?tf)
+        (tipus-segon-anterior  ?ts)
+        (necessita-primer ?dn)))
 
-  (:action finish-planning
-    :parameters (?d - dia ?pf - primer ?ps - segundo)
+  (:action fi-setmana
+    :parameters (?d - dia ?pf - primer ?ps - segon)
     :precondition (and
-        (current-day ?d)
-        (assigned-first  ?d ?pf)
-        (assigned-second ?d ?ps)
-        (forall (?x - dia) (not (next-day ?d ?x)))
-        (>= (current-calories) 1000)
-        (<= (current-calories) 1500)
-    )
+        (dia-actual ?d)
+        (primer-assignat ?d ?pf)
+        (segon-assignat  ?d ?ps)
+        (forall (?x - dia) (not (dia-seguent ?d ?x)))
+        (>= (calories-actuals) 1000)
+        (<= (calories-actuals) 1500))
     :effect (and
-        (planning-done)
-        (not (current-day ?d))
-    )
-  )
+        (planificacio-completa)
+        (not (dia-actual ?d))))
 )
