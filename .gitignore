@@ -21,4 +21,4 @@ __pycache__/
 
 # custom dump script
 /scripts/dump_project.sh
-/scripts/dump.txt
+/scripts/data.txt
