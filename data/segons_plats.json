@@ -1,16 +1,114 @@
 {
-  "carn": [
-    "fabada",
-    "polloroast",
-    "bistecvedella",
-    "canalmilanesa"
-  ],
-  "peix": [
-    "salmonplanxa",
-    "llengadoplanxa",
-    "bacallalaroma"
-  ],
-  "pasta": [
-    "lasanya"
-  ]
+  "amanida": {
+    "amanida_cesar": {
+      "calories": 180,
+      "preu": 4
+    },
+    "amanida_de_remolatxa": {
+      "calories": 160,
+      "preu": 3
+    },
+    "amanida_de_espinacs": {
+      "calories": 170,
+      "preu": 3
+    }
+  },
+  "crema": {
+    "crema_catalana": {
+      "calories": 250,
+      "preu": 4
+    },
+    "crema_de_limon": {
+      "calories": 240,
+      "preu": 4
+    },
+    "crema_de_xocolata": {
+      "calories": 260,
+      "preu": 5
+    }
+  },
+  "sopa": {
+    "sopa_de_pedra": {
+      "calories": 300,
+      "preu": 5
+    },
+    "sopa_de_galets": {
+      "calories": 280,
+      "preu": 4
+    },
+    "sopa_de_peix": {
+      "calories": 320,
+      "preu": 6
+    }
+  },
+  "pasta": {
+    "espaguetis_marisc": {
+      "calories": 550,
+      "preu": 6
+    },
+    "pennes_amb_pesto": {
+      "calories": 500,
+      "preu": 6
+    },
+    "tortellinis_carne": {
+      "calories": 600,
+      "preu": 7
+    }
+  },
+  "carn": {
+    "pollastre_a_la_planxa": {
+      "calories": 650,
+      "preu": 8
+    },
+    "xai_rostit": {
+      "calories": 700,
+      "preu": 9
+    },
+    "botifarra_a_la_planxa": {
+      "calories": 600,
+      "preu": 7
+    }
+  },
+  "peix": {
+    "llenguado_amb_lima": {
+      "calories": 500,
+      "preu": 8
+    },
+    "bacalla_amb_tomate": {
+      "calories": 550,
+      "preu": 7
+    },
+    "salmo_grillat": {
+      "calories": 520,
+      "preu": 9
+    }
+  },
+  "llegums": {
+    "estofat_cigrons": {
+      "calories": 450,
+      "preu": 5
+    },
+    "truita_de_llenties": {
+      "calories": 400,
+      "preu": 5
+    },
+    "faves_estofades": {
+      "calories": 480,
+      "preu": 6
+    }
+  },
+  "verdures": {
+    "truita_verdures": {
+      "calories": 300,
+      "preu": 4
+    },
+    "tataki_verdures": {
+      "calories": 320,
+      "preu": 5
+    },
+    "parrillada_verdures": {
+      "calories": 340,
+      "preu": 5
+    }
+  }
 }

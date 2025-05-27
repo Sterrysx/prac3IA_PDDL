@@ -1,1 +1,12 @@
-["amanida","crema","sopa","pasta","carn","peix"]
+{
+  "incompatibilitats": {
+    "amanida":   ["carn","peix"],
+    "crema":     ["carn","peix"],
+    "sopa":      ["pasta","verdures"],
+    "pasta":     ["crema","amanida"],
+    "carn":      ["verdures","sopa"],
+    "peix":      ["carn","crema"],
+    "llegums":   ["peix","pasta"],
+    "verdures":  ["carn","sopa"]
+  }
+}

@@ -1,18 +1,114 @@
 {
-  "amanida": [
-    "amanidavera",
-    "amanidarusa"
-  ],
-  "crema": [
-    "cremacamp",
-    "cremallegums"
-  ],
-  "sopa": [
-    "paellaval",
-    "sopaminestrelles"
-  ],
-  "pasta": [
-    "pastamediterranea",
-    "macarronsforn"
-  ]
+  "amanida": {
+    "amanida_catalana": {
+      "calories": 150,
+      "preu": 4
+    },
+    "amanida_de_cogombre": {
+      "calories": 120,
+      "preu": 3
+    },
+    "amanida_de_tomaquet": {
+      "calories": 130,
+      "preu": 3
+    }
+  },
+  "crema": {
+    "crema_de_carbassa": {
+      "calories": 180,
+      "preu": 3
+    },
+    "crema_de_carabasso": {
+      "calories": 170,
+      "preu": 2
+    },
+    "crema_de_carxofa": {
+      "calories": 160,
+      "preu": 3
+    }
+  },
+  "sopa": {
+    "sopa_de_peix": {
+      "calories": 250,
+      "preu": 5
+    },
+    "sopa_de_cigrons": {
+      "calories": 300,
+      "preu": 4
+    },
+    "sopa_de_marisc": {
+      "calories": 320,
+      "preu": 6
+    }
+  },
+  "pasta": {
+    "macarrons_forn": {
+      "calories": 380,
+      "preu": 4
+    },
+    "tallarins_carbonara": {
+      "calories": 420,
+      "preu": 5
+    },
+    "raviolis_ricotta": {
+      "calories": 400,
+      "preu": 5
+    }
+  },
+  "carn": {
+    "croquetes_carn": {
+      "calories": 250,
+      "preu": 4
+    },
+    "carpaccio_vedella": {
+      "calories": 200,
+      "preu": 7
+    },
+    "botifarra_brasa": {
+      "calories": 350,
+      "preu": 6
+    }
+  },
+  "peix": {
+    "ceviche_tonyina": {
+      "calories": 220,
+      "preu": 6
+    },
+    "tataki_salmo": {
+      "calories": 240,
+      "preu": 7
+    },
+    "llobarro_forn": {
+      "calories": 260,
+      "preu": 5
+    }
+  },
+  "llegums": {
+    "hummus": {
+      "calories": 300,
+      "preu": 4
+    },
+    "estofat_llenties": {
+      "calories": 350,
+      "preu": 5
+    },
+    "cigrons_saltejats": {
+      "calories": 330,
+      "preu": 4
+    }
+  },
+  "verdures": {
+    "verdures_a_la_planxa": {
+      "calories": 150,
+      "preu": 3
+    },
+    "escalivada_verdures": {
+      "calories": 180,
+      "preu": 3
+    },
+    "verdures_amb_salsa": {
+      "calories": 200,
+      "preu": 4
+    }
+  }
 }

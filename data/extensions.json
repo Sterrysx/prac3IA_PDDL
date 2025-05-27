@@ -1,11 +1,7 @@
 {
-  "ext3": {
-    "num_forced": 2
-  },
   "ext4": {
     "calories_min": 1000,
-    "calories_max": 1500,
-    "calories_range": [150,700]
+    "calories_max": 1500
   },
   "ext5": {
     "price_range": [1,10]
