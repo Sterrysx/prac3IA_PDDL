@@ -18,3 +18,7 @@ __pycache__/
 
 # ── Entornos / variables sensibles ─────────────
 .env
+
+# custom dump script
+/scripts/dump_project.sh
+/scripts/dump.txt
