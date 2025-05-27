@@ -1,0 +1,20 @@
+# ── IDE / editores ─────────────────────────────
+.vscode/
+
+# ── Archivos de sistema ────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Caché de Python ────────────────────────────
+__pycache__/
+*.py[cod]
+
+# ── Logs / salidas temporales ──────────────────
+*.log
+
+# ── Backups / swaps ────────────────────────────
+*~
+*.swp
+
+# ── Entornos / variables sensibles ─────────────
+.env
