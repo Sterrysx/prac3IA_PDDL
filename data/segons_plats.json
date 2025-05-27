@@ -1,0 +1,16 @@
+{
+  "carn": [
+    "fabada",
+    "polloroast",
+    "bistecvedella",
+    "canalmilanesa"
+  ],
+  "peix": [
+    "salmonplanxa",
+    "llengadoplanxa",
+    "bacallalaroma"
+  ],
+  "pasta": [
+    "lasanya"
+  ]
+}
