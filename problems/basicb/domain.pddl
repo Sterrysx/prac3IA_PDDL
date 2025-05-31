@@ -1,27 +1,17 @@
 (define (domain menu-basicb)
 (:requirements :strips :adl)
 (:types 
-    dia plat tipus rol - object
-    primer segon - rol
+    dia plat - object
+    primer segon - plat
 )
 (:predicates 
-    (assignat ?d - dia ?r - rol ?p - plat)
-    (es_tipus ?p - plat ?t - tipus)
-    (es_rol ?p - plat ?r - rol)
+    (assignat ?d - dia ?p - primer ?s - segon)
     (incompatible ?p1 - plat ?p2 - plat)
-    (utilitzat ?p - plat)
-    (consecutiu ?d1 - dia ?d2 - dia)
+    (diaAmbMenuAsignat ?d - dia)
 )
-(:action assignar-primer
-    :parameters (?d - dia ?p - plat)
-    :precondition (and (es_rol ?p primer) (not (utilitzat ?p)) (not (assignat ?d primer ?p)))
-    :effect (and (assignat ?d primer ?p) (utilitzat ?p))
-)
-(:action assignar-segon
-    :parameters (?d - dia ?p - plat ?pp - plat)
-    :precondition (and (es_rol ?p segon) (not (utilitzat ?p)) (not (assignat ?d segon ?p))
-                      (assignat ?d primer ?pp)
-                      (not (incompatible ?pp ?p)))
-    :effect (and (assignat ?d segon ?p) (utilitzat ?p))
+(:action AssignarMenu
+    :parameters (?d -dia ?p - primer ?s - segon )
+    :precondition (not (incompatible ?p ?s))
+    :effect (and (assignat ?d ?p ?s) (diaAmbMenuAsignat ?d))
 )
 )
