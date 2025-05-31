@@ -1,5 +1,5 @@
-(define (problem menu-basicb)
-  (:domain menu-basicb)
+(define (problem menubasicb)
+  (:domain menubasicb)
 
   (:objects
     dilluns dimarts dimecres dijous divendres - dia

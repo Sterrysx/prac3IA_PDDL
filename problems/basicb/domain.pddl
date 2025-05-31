@@ -1,4 +1,4 @@
-(define (domain menu-basicb)
+(define (domain menubasicb)
 (:requirements :strips :adl)
 (:types 
     dia plat - object
