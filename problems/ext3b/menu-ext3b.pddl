@@ -24,6 +24,9 @@
     (platTipus cremacamp vegetal)
     (platTipus polloroast carn)
     
+    ;; Required dishes on specific days
+    (platObligatori paellaval dijous)      ; Paella must be served on Thursday
+    (platObligatori lasanya dimarts)        ; Lasagna must be served on Tuesday
 
     (diaAnt DummyD  dilluns)
     (diaAnt dilluns  dimarts)

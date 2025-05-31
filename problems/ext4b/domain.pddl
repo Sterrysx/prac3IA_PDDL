@@ -1,8 +1,13 @@
-(define (domain menuext3b)
-  (:requirements :strips :adl)
+(define (domain menuext4b)
+  (:requirements :strips :adl :typing :equality :fluents)
   (:types 
     dia plat tipus - object
     primer segon - plat
+  )
+  (:functions
+    (minCalories)        ; Minimum calories required per day
+    (maxCalories)        ; Maximum calories allowed per day
+    (calories ?p - plat) ; Calories for each dish
   )
   (:predicates 
       (assignatP ?d - dia ?p - primer)
@@ -15,7 +20,7 @@
       (usat ?p - plat)
       (platTipus ?p - plat ?t - tipus)
       (diaAnt ?dant - dia ?dact - dia)
-      (platObligatori ?p - plat ?d - dia)  ; New predicate for required dishes on specific days
+      (platObligatori ?p - plat ?d - dia)
   )
 
   (:action assignarPrimer
@@ -69,6 +74,9 @@
         (not (segonAsignat ?d))
         (not (usat ?s))
         (not (incompatible ?p ?s))
+        ; Check calories constraints using the sum of both dishes
+        (>= (+ (calories ?p) (calories ?s)) (minCalories))
+        (<= (+ (calories ?p) (calories ?s)) (maxCalories))
         (exists (?dant - dia)
           (and 
             (diaAnt ?dant ?d)

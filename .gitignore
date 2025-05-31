@@ -22,4 +22,4 @@ __pycache__/
 # custom dump script
 /scripts/dump_project.sh
 /scripts/data.txt
-/problems
+
