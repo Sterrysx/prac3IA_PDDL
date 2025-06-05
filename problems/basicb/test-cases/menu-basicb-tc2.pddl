@@ -3,19 +3,19 @@
 
   (:objects
     dilluns dimarts dimecres dijous divendres - dia
-    hummus estofat_llenties brocoli_allada escalivada_verdures amanida_asiatica cigrons_saltejats verdures_amb_salsa crema_de_bolets amanida_fasols raviolis_ricotta - primer
-    salmo_grillat crema_de_limon crema_avellana crema_taronja cuixa_anec orata_forno wok_verdures sopa_de_galets pollastre_a_la_planxa hamburguesa_mongeta  - segon
+    estofat_llenties crema_espinacs tallarins_carbonara escalivada_verdures sopa_verdures brocoli_allada amanida_de_tomaquet verdures_a_la_planxa amanida_catalana verdures_amb_salsa - primer
+    tataki_verdures truita_verdures xai_rostit crema_de_limon sopa_ajo truita_de_llenties orata_forno salmo_grillat estofat_cigrons crema_avellana  - segon
   )
 
   (:init
-    (incompatible raviolis_ricotta crema_avellana)
-            (incompatible escalivada_verdures pollastre_a_la_planxa)
-            (incompatible crema_de_bolets salmo_grillat)
-            (incompatible verdures_amb_salsa pollastre_a_la_planxa)
-            (incompatible brocoli_allada sopa_de_galets)
-            (incompatible amanida_fasols salmo_grillat)
-            (incompatible brocoli_allada cuixa_anec)
-            (incompatible amanida_asiatica cuixa_anec)
+    (incompatible sopa_verdures truita_verdures)
+            (incompatible tallarins_carbonara crema_avellana)
+            (incompatible crema_espinacs salmo_grillat)
+            (incompatible amanida_de_tomaquet orata_forno)
+            (incompatible crema_espinacs xai_rostit)
+            (incompatible brocoli_allada sopa_ajo)
+            (incompatible escalivada_verdures xai_rostit)
+            (incompatible crema_espinacs orata_forno)
   )
 
   (:goal

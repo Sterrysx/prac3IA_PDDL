@@ -3,19 +3,19 @@
 
   (:objects
     dilluns dimarts dimecres dijous divendres - dia
-    amanida_de_cogombre crema_espinacs crema_de_carxofa amanida_de_tomaquet amanida_catalana estofat_llenties truita_potatge sopa_de_peix cigrons_saltejats tallarins_carbonara - primer
-    parrillada_verdures wok_verdures crema_de_limon crema_taronja sopa_ajo sopa_de_galets cuixa_anec estofat_cigrons tataki_verdures curry_verdures  - segon
+    verdures_a_la_planxa sopa_verdures amanida_asiatica hummus sopa_de_marisc truita_potatge amanida_de_tomaquet crema_de_carxofa sopa_de_cigrons amanida_de_cogombre - primer
+    filet_porc salmo_grillat cuixa_anec botifarra_a_la_planxa crema_de_limon estofat_cigrons orata_forno curry_verdures crema_avellana sopa_ceba  - segon
   )
 
   (:init
-    (incompatible crema_de_carxofa cuixa_anec)
-            (incompatible tallarins_carbonara crema_de_limon)
-            (incompatible sopa_de_peix parrillada_verdures)
-            (incompatible crema_espinacs cuixa_anec)
-            (incompatible sopa_de_peix tataki_verdures)
-            (incompatible sopa_de_peix wok_verdures)
-            (incompatible amanida_catalana cuixa_anec)
+    (incompatible amanida_de_cogombre filet_porc)
+            (incompatible amanida_asiatica filet_porc)
+            (incompatible amanida_de_cogombre orata_forno)
+            (incompatible crema_de_carxofa salmo_grillat)
             (incompatible amanida_de_tomaquet cuixa_anec)
+            (incompatible amanida_de_cogombre botifarra_a_la_planxa)
+            (incompatible amanida_de_tomaquet botifarra_a_la_planxa)
+            (incompatible amanida_de_tomaquet salmo_grillat)
   )
 
   (:goal

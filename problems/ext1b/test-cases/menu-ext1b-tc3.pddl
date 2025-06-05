@@ -3,19 +3,19 @@
 
   (:objects
     dilluns dimarts dimecres dijous divendres - dia
-    tallarins_carbonara gnocchi_pesto sopa_de_cigrons estofat_llenties sopa_verdures macarrons_forn sopa_miso crema_de_carxofa amanida_fasols amanida_quinoa - primer
-    crema_de_xocolata salmo_grillat faves_estofades cuixa_anec sopa_ceba llenguado_amb_lima botifarra_a_la_planxa turbot_planxa estofat_soja estofat_cigrons  - segon
+    brocoli_allada macarrons_forn escalivada_verdures estofat_llenties sopa_de_marisc cigrons_saltejats crema_espinacs tallarins_carbonara crema_de_carabasso amanida_de_cogombre - primer
+    sopa_de_pedra crema_de_limon parrillada_verdures sopa_ajo sopa_ceba faves_estofades truita_verdures crema_de_xocolata curry_verdures turbot_planxa  - segon
   )
 
   (:init
-    (incompatible amanida_fasols salmo_grillat)
-            (incompatible amanida_fasols llenguado_amb_lima)
-            (incompatible crema_de_carxofa turbot_planxa)
-            (incompatible crema_de_carxofa llenguado_amb_lima)
-            (incompatible estofat_llenties salmo_grillat)
-            (incompatible amanida_quinoa botifarra_a_la_planxa)
-            (incompatible crema_de_carxofa salmo_grillat)
-            (incompatible macarrons_forn crema_de_xocolata)
+    (incompatible escalivada_verdures sopa_de_pedra)
+            (incompatible sopa_de_marisc truita_verdures)
+            (incompatible crema_espinacs turbot_planxa)
+            (incompatible amanida_de_cogombre turbot_planxa)
+            (incompatible crema_de_carabasso turbot_planxa)
+            (incompatible macarrons_forn crema_de_limon)
+            (incompatible brocoli_allada sopa_ajo)
+            (incompatible sopa_de_marisc curry_verdures)
   )
 
   (:goal

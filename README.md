@@ -1,69 +1,135 @@
-# Weekly Menu PDDL Project
+# Planificació Automàtica de Menús amb PDDL
 
-This repository provides two PDDL domains and corresponding problem definitions for a weekly menu planning task, alongside helper executables and scripts for generating and evaluating plans.
+## Visió general
 
-## Repository Structure
+Aquest projecte mostra una cadena completa per generar i resoldre problemes de planificació en **PDDL** que construeixen menús setmanals (dilluns–divendres) sota diferents nivells de restricció.  S’utilitza el planificador **Fast‑Forward (FF)** i la seva variant **Metric‑FF** per treballar amb fluents i optimització de costos.
+
+|   Nivell | Predicats addicionals             | Restriccions                                 | Nota màx. |
+| -------: | --------------------------------- | -------------------------------------------- | --------- |
+| `basicb` | —                                 | *Compatibilitat plat 1 ↔ plat 2*             | 6         |
+|  `ext1b` | `usat`                            | No repetir cap plat en tota la setmana       | 7         |
+|  `ext2b` | `diaPrimerTipus`, `diaSegonTipus` | No repetir tipus en dies consecutius         | 8         |
+|  `ext3b` | `platObligatori`                  | Alguns plats han de sortir un dia determinat | 9         |
+|  `ext4b` | funcions `calories`               | 1000 ≤ kcal ≤ 1500 per dia                   | 10        |
+|  `ext5b` | funció `preu`, `metric`           | Minimitzar el cost total del menú            | 11        |
+
+> **Directori de treball**: totes les rutes de la guia assumeixen que estàs situat/da al directori arrel del repositori.
+
+---
+
+## Estructura de carpetes
 
 ```
-PRAC3IA_PDDL/         # Project root
-├── binaries/          # Platform executables and dependencies
-│   ├── ff.exe         # Fast-Forward planner executable
-│   ├── metricff.exe   # Metric version of Fast-Forward planner
-│   └── cygwin1.dll    # Cygwin runtime library required on Windows
-│
-├── domain/            # PDDL domain definitions
-│   ├── domain.pddl         # Basic (non-metric) weekly-menu domain
-│   └── domain_metric.pddl  # Metric (numeric) extension of the domain
-│
-├── problems/          # Problem instances organized by extension
-│   ├── basic/             # Extension 0–3 test problems
-│   │   └── menu-test1.pddl
-│   ├── ext1/              # Extension 1: "used" predicate tests
-│   ├── ext2/              # Extension 2: previous-day-type tests
-│   ├── ext3/              # Extension 3: forced-dish tests
-│   ├── ext4/              # Extension 4: numeric-fluent (calories)
-│   └── ext5/              # Extension 5: cost-optimization tests
-│
-├── scripts/           # Helper scripts and generated output
-│   ├── generator/       # Script(s) to automatically produce problem files
-│   ├── run/             # Script(s) to invoke planners on domains/problems
-│   ├── dump_project.sh  # Script to dump file contents for review
-│   └── data.txt         # Last output from `dump_project.sh`
-│
-├── .gitignore         # Specifies files and dirs ignored by Git
-└── README.md           # This overview and setup instructions
+.
+├── binaries/            # executables FF (linux/ i windows/)
+├── data/                # catàlegs de plats, calories, preus, incompatibilitats
+├── problems/
+│   ├── basicb/
+│   ├── ext1b/ … ext5b/  # cada extensió amb el seu domain.pddl
+│   │   └── test-cases/  # problemes generats (menu-*.pddl)
+├── scripts/
+│   ├── generator.py     # genera problemes aleatoris
+│   └── run_all.sh       # llança tots els test‑cases i dóna estadístiques
+└── README.md            # aquesta guia
 ```
 
-### Why this layout?
+---
 
-* **binaries/** keeps all external executables in one place, avoiding clutter in the root directory.
-* **domain/** separates PDDL domain definitions from problem instances.
-* **problems/** organizes test cases by feature extensions (ext1–ext5) for modular testing.
-* **scripts/** holds utility scripts (generation, execution, dumping) and their outputs, making automation easy to find and update.
-* **.gitignore** prevents temporary files (e.g. `data.txt`) and binaries from being committed unless desired.
+## Requisits
 
-With this structure, you can quickly locate or update any part of the planning pipeline, from domain models to test instances and execution tools.
+* **Python ≥ 3.8** – per executar `scripts/generator.py`.
+* **FF** i **Metric‑FF**:
 
-## Running & Executing Problem Instances
+  * **Linux**: ja hi ha versions compilades a `binaries/linux/ff` i `binaries/linux/metric-ff`.
+  * **Windows**: es proporcionen `binaries/windows/ff.exe` i `binaries/windows/metricff.exe` (compilades amb Cygwin).
+  * Si prefereixes compilar‑los tu mateix:
 
-Before running any planner, ensure the `binaries/` folder is on your PATH:
+    ```bash
+    # Exemple (Linux)
+    sudo apt install flex bison g++            # dependències
+    tar -xzf FF-v2.3.tgz
+    cd FF-v2.3 && make
+    ```
+
+---
+
+## Generar casos de prova
 
 ```bash
-export PATH="$(pwd)/binaries:$PATH"
+# 5 casos per a totes les extensions amb llavor fixa
+python3 scripts/generator.py --all --cases 5 --seed 42
+
+# 2 casos només per a ext2 i ext4
+python3 scripts/generator.py --ext 2 4 --cases 2
 ```
 
-### Non‑metric (basic) domains
+Es creen fitxers `menu-<ext>N‑tc<M>.pddl` dins `problems/<extNb>/test-cases/`.
 
-To solve a basic problem (extensions 0–3), run:
+---
+
+## Execució manual d’un cas
+
+### Linux
 
 ```bash
-ff.exe -o domain/domain.pddl -f problems/basic/menu-test1.pddl > basic_plan.txt
+# Extensió 3, cas 1
+binaries/linux/ff \
+  -o problems/ext3b/domain.pddl \
+  -f problems/ext3b/test-cases/menu-ext3b-tc1.pddl
 ```
 
-### Metric (numeric) domains
+### Windows (PowerShell o CMD)
 
-To solve a metric problem (extensions 4–5), run:
+```powershell
+REM Extensió 4 (Metric‑FF) – recorda afegir -O només a ext5
+binaries\windows\metricff.exe ^
+  -o problems\ext4b\domain.pddl ^
+  -f problems\ext4b\test-cases\menu-ext4b-tc1.pddl
+```
+
+*Si treballes dins WSL i vols cridar les versions Windows per a proves de rendiment, converteix les rutes amb `wslpath -w`.*
+
+---
+
+## `scripts/run_all.sh`
+
+### Què fa
+
+1. Recorre `basicb` i totes les extensions (`ext1b` … `ext5b`).
+2. Localitza tots els `.pddl` dins de `test-cases/`.
+3. Tria automàticament l’executable adequat:
+
+   * `ff` per `basicb`, `ext1b`, `ext2b`, `ext3b`.
+   * `metric-ff` per `ext4b`.
+   * `metric-ff -O` per `ext5b` (optimització).
+4. Executa cada combinació *domini + problema* i comprova el `exit code`.
+5. Mostra un resum final amb nombre de tests passats (%) i desa tot el log a `scripts/run_all.log`.
+
+### Ús
 
 ```bash
-metricff.exe -o domain/domain_metric.pddl -f problems/ext4/your_problem.pddl > metric_plan.txt
+chmod +x scripts/run_all.sh   # un sol cop
+./scripts/run_all.sh          # llança totes les proves
 ```
+
+Exemple de sortida abreujada:
+
+```
+=== Extension basicb ===
+→ menu-basicb-tc1.pddl   ✔ OK
+...
+────────────── RESULTATS ──────────────
+Total tests   : 30
+Passats       : 29
+Percentatge   : 97 %
+```
+
+---
+
+## Preguntes freqüents
+
+* **P: FF s’atura amb “predicate INCOMPATIBLE is declared to have 2 (not 3) arguments”.**
+  **R:** Assegura’t que tots els noms de plats són ASCII pur (`[A‑Za‑z0‑9_-]`). Accents o espais trenquen la tokenització.
+
+* **P: Metric‑FF no troba el pla òptim?**
+  **R:** La cerca `best‑first` pot acabar amb un pla vàlid però no mínim. Torna a executar‑lo o ajusta els paràmetres d’heurística si cal.

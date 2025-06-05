@@ -3,19 +3,19 @@
 
   (:objects
     dilluns dimarts dimecres dijous divendres - dia
-    amanida_fasols truita_potatge raviolis_ricotta crema_de_carbassa crema_de_carabasso estofat_llenties tallarins_carbonara amanida_quinoa amanida_de_cogombre sopa_de_peix - primer
-    curry_verdures cuixa_anec sopa_ceba crema_catalana orata_forno truita_de_llenties wok_verdures parrillada_verdures turbot_planxa estofat_cigrons  - segon
+    raviolis_ricotta amanida_de_tomaquet estofat_llenties amanida_quinoa tallarins_carbonara crema_de_carbassa brocoli_allada amanida_fasols truita_potatge sopa_miso - primer
+    truita_verdures orata_forno faves_estofades crema_de_xocolata crema_taronja bacalla_amb_tomaquet crema_de_limon curry_verdures hamburguesa_mongeta filet_porc  - segon
   )
 
   (:init
-    (incompatible crema_de_carbassa cuixa_anec)
-            (incompatible sopa_de_peix parrillada_verdures)
-            (incompatible amanida_de_cogombre orata_forno)
-            (incompatible sopa_de_peix wok_verdures)
-            (incompatible amanida_fasols turbot_planxa)
-            (incompatible tallarins_carbonara crema_catalana)
-            (incompatible crema_de_carabasso orata_forno)
-            (incompatible sopa_de_peix curry_verdures)
+    (incompatible raviolis_ricotta crema_de_limon)
+            (incompatible amanida_fasols bacalla_amb_tomaquet)
+            (incompatible sopa_miso truita_verdures)
+            (incompatible truita_potatge orata_forno)
+            (incompatible estofat_llenties orata_forno)
+            (incompatible estofat_llenties bacalla_amb_tomaquet)
+            (incompatible amanida_de_tomaquet filet_porc)
+            (incompatible crema_de_carbassa bacalla_amb_tomaquet)
   )
 
   (:goal
