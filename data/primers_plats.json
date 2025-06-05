@@ -1,114 +1,44 @@
 {
   "amanida": {
-    "amanida_catalana": {
-      "calories": 150,
-      "preu": 4
-    },
-    "amanida_de_cogombre": {
-      "calories": 120,
-      "preu": 3
-    },
-    "amanida_de_tomaquet": {
-      "calories": 130,
-      "preu": 3
-    }
+    "amanida_catalana":   { "calories": 300, "preu": 4 },
+    "amanida_de_cogombre":{ "calories": 260, "preu": 3 },
+    "amanida_de_tomaquet":{ "calories": 270, "preu": 3 },
+    "amanida_asiatica":   { "calories": 330, "preu": 4 },
+    "amanida_quinoa":     { "calories": 360, "preu": 4 }
   },
   "crema": {
-    "crema_de_carbassa": {
-      "calories": 180,
-      "preu": 3
-    },
-    "crema_de_carabasso": {
-      "calories": 170,
-      "preu": 2
-    },
-    "crema_de_carxofa": {
-      "calories": 160,
-      "preu": 3
-    }
+    "crema_de_carbassa":  { "calories": 350, "preu": 3 },
+    "crema_de_carabasso": { "calories": 330, "preu": 2 },
+    "crema_de_carxofa":   { "calories": 320, "preu": 3 },
+    "crema_de_bolets":    { "calories": 390, "preu": 4 },
+    "crema_espinacs":     { "calories": 380, "preu": 4 }
   },
   "sopa": {
-    "sopa_de_peix": {
-      "calories": 250,
-      "preu": 5
-    },
-    "sopa_de_cigrons": {
-      "calories": 300,
-      "preu": 4
-    },
-    "sopa_de_marisc": {
-      "calories": 320,
-      "preu": 6
-    }
+    "sopa_de_peix":       { "calories": 450, "preu": 5 },
+    "sopa_de_cigrons":    { "calories": 530, "preu": 4 },
+    "sopa_de_marisc":     { "calories": 560, "preu": 6 },
+    "sopa_miso":          { "calories": 500, "preu": 5 },
+    "sopa_verdures":      { "calories": 480, "preu": 4 }
   },
   "pasta": {
-    "macarrons_forn": {
-      "calories": 380,
-      "preu": 4
-    },
-    "tallarins_carbonara": {
-      "calories": 420,
-      "preu": 5
-    },
-    "raviolis_ricotta": {
-      "calories": 400,
-      "preu": 5
-    }
-  },
-  "carn": {
-    "croquetes_carn": {
-      "calories": 250,
-      "preu": 4
-    },
-    "carpaccio_vedella": {
-      "calories": 200,
-      "preu": 7
-    },
-    "botifarra_brasa": {
-      "calories": 350,
-      "preu": 6
-    }
-  },
-  "peix": {
-    "ceviche_tonyina": {
-      "calories": 220,
-      "preu": 6
-    },
-    "tataki_salmo": {
-      "calories": 240,
-      "preu": 7
-    },
-    "llobarro_forn": {
-      "calories": 260,
-      "preu": 5
-    }
+    "macarrons_forn":     { "calories": 650, "preu": 4 },
+    "tallarins_carbonara":{ "calories": 700, "preu": 5 },
+    "raviolis_ricotta":   { "calories": 680, "preu": 5 },
+    "penne_arrabiata":    { "calories": 720, "preu": 5 },
+    "gnocchi_pesto":      { "calories": 740, "preu": 5 }
   },
   "llegums": {
-    "hummus": {
-      "calories": 300,
-      "preu": 4
-    },
-    "estofat_llenties": {
-      "calories": 350,
-      "preu": 5
-    },
-    "cigrons_saltejats": {
-      "calories": 330,
-      "preu": 4
-    }
+    "hummus":             { "calories": 530, "preu": 4 },
+    "estofat_llenties":   { "calories": 600, "preu": 5 },
+    "cigrons_saltejats":  { "calories": 570, "preu": 4 },
+    "amanida_fasols":     { "calories": 560, "preu": 4 },
+    "truita_potatge":     { "calories": 580, "preu": 5 }
   },
   "verdures": {
-    "verdures_a_la_planxa": {
-      "calories": 150,
-      "preu": 3
-    },
-    "escalivada_verdures": {
-      "calories": 180,
-      "preu": 3
-    },
-    "verdures_amb_salsa": {
-      "calories": 200,
-      "preu": 4
-    }
+    "verdures_a_la_planxa":{ "calories": 300, "preu": 3 },
+    "escalivada_verdures": { "calories": 350, "preu": 3 },
+    "verdures_amb_salsa":  { "calories": 380, "preu": 4 },
+    "fajitas_verdures":    { "calories": 390, "preu": 4 },
+    "brocoli_allada":      { "calories": 360, "preu": 3 }
   }
 }

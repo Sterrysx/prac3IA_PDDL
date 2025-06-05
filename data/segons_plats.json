@@ -1,114 +1,44 @@
 {
-  "amanida": {
-    "amanida_cesar": {
-      "calories": 180,
-      "preu": 4
-    },
-    "amanida_de_remolatxa": {
-      "calories": 160,
-      "preu": 3
-    },
-    "amanida_de_espinacs": {
-      "calories": 170,
-      "preu": 3
-    }
-  },
   "crema": {
-    "crema_catalana": {
-      "calories": 250,
-      "preu": 4
-    },
-    "crema_de_limon": {
-      "calories": 240,
-      "preu": 4
-    },
-    "crema_de_xocolata": {
-      "calories": 260,
-      "preu": 5
-    }
+    "crema_catalana":       { "calories": 440, "preu": 4 },
+    "crema_de_limon":       { "calories": 430, "preu": 4 },
+    "crema_de_xocolata":    { "calories": 450, "preu": 5 },
+    "crema_taronja":        { "calories": 410, "preu": 4 },
+    "crema_avellana":       { "calories": 480, "preu": 5 }
   },
   "sopa": {
-    "sopa_de_pedra": {
-      "calories": 300,
-      "preu": 5
-    },
-    "sopa_de_galets": {
-      "calories": 280,
-      "preu": 4
-    },
-    "sopa_de_peix": {
-      "calories": 320,
-      "preu": 6
-    }
-  },
-  "pasta": {
-    "espaguetis_marisc": {
-      "calories": 550,
-      "preu": 6
-    },
-    "pennes_amb_pesto": {
-      "calories": 500,
-      "preu": 6
-    },
-    "tortellinis_carne": {
-      "calories": 600,
-      "preu": 7
-    }
+    "sopa_de_pedra":        { "calories": 500, "preu": 5 },
+    "sopa_de_galets":       { "calories": 470, "preu": 4 },
+    "sopa_de_peix":         { "calories": 520, "preu": 6 },
+    "sopa_ceba":            { "calories": 450, "preu": 4 },
+    "sopa_ajo":             { "calories": 490, "preu": 4 }
   },
   "carn": {
-    "pollastre_a_la_planxa": {
-      "calories": 650,
-      "preu": 8
-    },
-    "xai_rostit": {
-      "calories": 700,
-      "preu": 9
-    },
-    "botifarra_a_la_planxa": {
-      "calories": 600,
-      "preu": 7
-    }
+    "pollastre_a_la_planxa":{ "calories": 940, "preu": 8 },
+    "xai_rostit":           { "calories": 1000, "preu": 9 },
+    "botifarra_a_la_planxa":{ "calories": 880, "preu": 7 },
+    "filet_porc":           { "calories": 900, "preu": 8 },
+    "cuixa_ànec":           { "calories": 980, "preu": 9 }
   },
   "peix": {
-    "llenguado_amb_lima": {
-      "calories": 500,
-      "preu": 8
-    },
-    "bacalla_amb_tomate": {
-      "calories": 550,
-      "preu": 7
-    },
-    "salmo_grillat": {
-      "calories": 520,
-      "preu": 9
-    }
+    "llenguado_amb_lima":   { "calories": 750, "preu": 8 },
+    "bacalla_amb_tomate":   { "calories": 810, "preu": 7 },
+    "salmo_grillat":        { "calories": 780, "preu": 9 },
+    "orata_forno":          { "calories": 800, "preu": 8 },
+    "turbot_planxa":        { "calories": 790, "preu": 8 }
   },
   "llegums": {
-    "estofat_cigrons": {
-      "calories": 450,
-      "preu": 5
-    },
-    "truita_de_llenties": {
-      "calories": 400,
-      "preu": 5
-    },
-    "faves_estofades": {
-      "calories": 480,
-      "preu": 6
-    }
+    "estofat_cigrons":      { "calories": 690, "preu": 5 },
+    "truita_de_llenties":   { "calories": 620, "preu": 5 },
+    "faves_estofades":      { "calories": 730, "preu": 6 },
+    "hamburguesa_mongeta":  { "calories": 670, "preu": 5 },
+    "estofat_soja":         { "calories": 700, "preu": 5 }
   },
   "verdures": {
-    "truita_verdures": {
-      "calories": 300,
-      "preu": 4
-    },
-    "tataki_verdures": {
-      "calories": 320,
-      "preu": 5
-    },
-    "parrillada_verdures": {
-      "calories": 340,
-      "preu": 5
-    }
+    "truita_verdures":      { "calories": 500, "preu": 4 },
+    "tataki_verdures":      { "calories": 520, "preu": 5 },
+    "parrillada_verdures":  { "calories": 550, "preu": 5 },
+    "curry_verdures":       { "calories": 580, "preu": 5 },
+    "wok_verdures":         { "calories": 540, "preu": 4 }
   }
 }
