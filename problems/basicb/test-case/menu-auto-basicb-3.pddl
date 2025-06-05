@@ -1,0 +1,58 @@
+      (define (problem menu-basicb-3)
+        (:domain menubasicb)
+
+          (:objects
+  dilluns dimarts dimecres dijous divendres - dia
+  cigrons_saltejats estofat_llenties raviolis_ricotta hummus sopa_de_peix amanida_de_tomaquet amanida_de_cogombre sopa_de_cigrons macarrons_forn llobarro_forn carpaccio_vedella crema_de_carbassa - primer
+  crema_catalana pollastre_a_la_planxa sopa_de_peix botifarra_a_la_planxa tortellinis_carne crema_de_xocolata truita_de_llenties salmo_grillat sopa_de_pedra pennes_amb_pesto crema_de_limon bacalla_amb_tomate - segon
+)
+
+        (:init
+      (incompatible cigrons_saltejats tortellinis_carne)
+      (incompatible cigrons_saltejats salmo_grillat)
+      (incompatible cigrons_saltejats pennes_amb_pesto)
+      (incompatible cigrons_saltejats bacalla_amb_tomate)
+      (incompatible estofat_llenties tortellinis_carne)
+      (incompatible estofat_llenties salmo_grillat)
+      (incompatible estofat_llenties pennes_amb_pesto)
+      (incompatible estofat_llenties bacalla_amb_tomate)
+      (incompatible raviolis_ricotta crema_catalana)
+      (incompatible raviolis_ricotta crema_de_xocolata)
+      (incompatible raviolis_ricotta crema_de_limon)
+      (incompatible hummus tortellinis_carne)
+      (incompatible hummus salmo_grillat)
+      (incompatible hummus pennes_amb_pesto)
+      (incompatible hummus bacalla_amb_tomate)
+      (incompatible sopa_de_peix tortellinis_carne)
+      (incompatible sopa_de_peix pennes_amb_pesto)
+      (incompatible amanida_de_tomaquet pollastre_a_la_planxa)
+      (incompatible amanida_de_tomaquet botifarra_a_la_planxa)
+      (incompatible amanida_de_tomaquet salmo_grillat)
+      (incompatible amanida_de_tomaquet bacalla_amb_tomate)
+      (incompatible amanida_de_cogombre pollastre_a_la_planxa)
+      (incompatible amanida_de_cogombre botifarra_a_la_planxa)
+      (incompatible amanida_de_cogombre salmo_grillat)
+      (incompatible amanida_de_cogombre bacalla_amb_tomate)
+      (incompatible sopa_de_cigrons tortellinis_carne)
+      (incompatible sopa_de_cigrons pennes_amb_pesto)
+      (incompatible macarrons_forn crema_catalana)
+      (incompatible macarrons_forn crema_de_xocolata)
+      (incompatible macarrons_forn crema_de_limon)
+      (incompatible llobarro_forn crema_catalana)
+      (incompatible llobarro_forn pollastre_a_la_planxa)
+      (incompatible llobarro_forn botifarra_a_la_planxa)
+      (incompatible llobarro_forn crema_de_xocolata)
+      (incompatible llobarro_forn crema_de_limon)
+      (incompatible carpaccio_vedella sopa_de_peix)
+      (incompatible carpaccio_vedella sopa_de_pedra)
+      (incompatible crema_de_carbassa pollastre_a_la_planxa)
+      (incompatible crema_de_carbassa botifarra_a_la_planxa)
+      (incompatible crema_de_carbassa salmo_grillat)
+      (incompatible crema_de_carbassa bacalla_amb_tomate)
+        )
+
+          (:goal
+    (forall (?d - dia) (diaAmbMenuAsignat ?d))
+)
+
+      )
