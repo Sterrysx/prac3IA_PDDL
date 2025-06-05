@@ -1,0 +1,58 @@
+(define (problem menuext3b-tc3)
+          (:domain menuext3b)
+
+          (:objects
+            dilluns dimarts dimecres dijous divendres DummyD - dia
+sopa_miso amanida_quinoa fajitas_verdures brocoli_allada sopa_de_marisc raviolis_ricotta crema_de_carxofa amanida_asiatica truita_potatge verdures_amb_salsa - primer
+crema_avellana sopa_ajo crema_de_xocolata crema_de_limon xai_rostit crema_taronja estofat_soja truita_verdures faves_estofades wok_verdures - segon
+DummyT amanida carn crema llegums pasta peix sopa verdures - tipus
+          )
+
+          (:init
+            (incompatible crema_de_carxofa xai_rostit)
+    (incompatible raviolis_ricotta crema_taronja)
+    (incompatible fajitas_verdures xai_rostit)
+    (incompatible raviolis_ricotta crema_avellana)
+    (incompatible sopa_de_marisc wok_verdures)
+    (incompatible brocoli_allada xai_rostit)
+    (incompatible amanida_quinoa xai_rostit)
+    (incompatible raviolis_ricotta crema_de_xocolata)
+    (platTipus sopa_miso sopa)
+    (platTipus amanida_quinoa amanida)
+    (platTipus fajitas_verdures verdures)
+    (platTipus brocoli_allada verdures)
+    (platTipus sopa_de_marisc sopa)
+    (platTipus raviolis_ricotta pasta)
+    (platTipus crema_de_carxofa crema)
+    (platTipus amanida_asiatica amanida)
+    (platTipus truita_potatge llegums)
+    (platTipus verdures_amb_salsa verdures)
+    (platTipus crema_avellana crema)
+    (platTipus sopa_ajo sopa)
+    (platTipus crema_de_xocolata crema)
+    (platTipus crema_de_limon crema)
+    (platTipus xai_rostit carn)
+    (platTipus crema_taronja crema)
+    (platTipus estofat_soja llegums)
+    (platTipus truita_verdures verdures)
+    (platTipus faves_estofades llegums)
+    (platTipus wok_verdures verdures)
+    (diaAnt DummyD dilluns)
+    (diaAnt dilluns dimarts)
+    (diaAnt dimarts dimecres)
+    (diaAnt dimecres dijous)
+    (diaAnt dijous divendres)
+    (primerAsignat DummyD)
+(segonAsignat DummyD)
+(diaPrimerTipus DummyD DummyT)
+(diaSegonTipus  DummyD DummyT)
+    (platObligatori fajitas_verdures dimarts)
+    (platObligatori wok_verdures dilluns)
+          )
+
+          (:goal
+            (forall (?d - dia)
+              (and (primerAsignat ?d) (segonAsignat ?d))
+            )
+          )
+        )
