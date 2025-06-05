@@ -1,0 +1,57 @@
+(define (problem menuext3b-tc5)
+          (:domain menuext3b)
+
+          (:objects
+            dilluns dimarts dimecres dijous divendres DummyD - dia
+tallarins_carbonara verdures_amb_salsa hummus amanida_fasols macarrons_forn verdures_a_la_planxa brocoli_allada fajitas_verdures amanida_asiatica crema_de_bolets - primer
+sopa_de_pedra parrillada_verdures crema_avellana crema_catalana sopa_ceba crema_taronja sopa_de_galets crema_de_limon faves_estofades botifarra_a_la_planxa - segon
+DummyT amanida carn crema llegums pasta peix sopa verdures - tipus
+          )
+
+          (:init
+            (incompatible amanida_asiatica botifarra_a_la_planxa)
+    (incompatible tallarins_carbonara crema_de_limon)
+    (incompatible tallarins_carbonara crema_taronja)
+    (incompatible verdures_a_la_planxa sopa_de_galets)
+    (incompatible fajitas_verdures sopa_de_galets)
+    (incompatible fajitas_verdures sopa_ceba)
+    (incompatible crema_de_bolets botifarra_a_la_planxa)
+    (incompatible brocoli_allada sopa_ceba)
+    (platTipus tallarins_carbonara pasta)
+    (platTipus verdures_amb_salsa verdures)
+    (platTipus hummus llegums)
+    (platTipus amanida_fasols llegums)
+    (platTipus macarrons_forn pasta)
+    (platTipus verdures_a_la_planxa verdures)
+    (platTipus brocoli_allada verdures)
+    (platTipus fajitas_verdures verdures)
+    (platTipus amanida_asiatica amanida)
+    (platTipus crema_de_bolets crema)
+    (platTipus sopa_de_pedra sopa)
+    (platTipus parrillada_verdures verdures)
+    (platTipus crema_avellana crema)
+    (platTipus crema_catalana crema)
+    (platTipus sopa_ceba sopa)
+    (platTipus crema_taronja crema)
+    (platTipus sopa_de_galets sopa)
+    (platTipus crema_de_limon crema)
+    (platTipus faves_estofades llegums)
+    (platTipus botifarra_a_la_planxa carn)
+    (diaAnt DummyD dilluns)
+    (diaAnt dilluns dimarts)
+    (diaAnt dimarts dimecres)
+    (diaAnt dimecres dijous)
+    (diaAnt dijous divendres)
+    (primerAsignat DummyD)
+(segonAsignat  DummyD)
+(diaPrimerTipus DummyD DummyT)
+(diaSegonTipus  DummyD DummyT)
+    (platObligatori crema_de_limon divendres)
+    (platObligatori fajitas_verdures dilluns)
+          )
+
+          (:goal
+            (forall (?d - dia)
+              (and (primerAsignat ?d) (segonAsignat ?d)))
+          )
+        )

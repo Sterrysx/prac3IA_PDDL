@@ -1,50 +1,23 @@
 #!/usr/bin/env python3
-"""generate_test_cases.py
-------------------------
-Utility script to create **random** PDDL *problem* instances for every menu‑planning
-extension (basic → ext 5).
+"""
+generator.py
+~~~~~~~~~~~~
+Crea instàncies *aleatòries* de problema PDDL per a totes les extensions
+(basic → ext 5) de la pràctica de planificació de menús.
 
-The generator consumes the authoritative JSON datasets in **./data** and writes a
-complete test‑case directory tree under each extension folder, preserving the
-original *domain.pddl* while creating new *problem* files (e.g.
-`menu-ext2b‑tc1.pddl`).
+Canvi destacat (juny 2025)
+--------------------------
+・ Ja **no es copia** `domain.pddl` dins de «test-cases/».  
+  El problema generat apunta al domini que ja existeix a
+  `problems/<extXb>/domain.pddl`.
 
-Each invocation can control how many test cases are produced per extension and
-whether *all* extensions or only a subset should be handled.
+Ús bàsic
+--------
+# 5 casos per a totes les extensions
+python3 scripts/generator.py --all --cases 5
 
-Examples
-~~~~~~~~
-```bash
-# Build three fresh random test cases for every extension
-python scripts/generate_test_cases.py --cases 3 --all
-
-# Build one test for ext2 and ext4 only
-python scripts/generate_test_cases.py --cases 1 --ext 2 4
-```
-
-Implementation notes
-~~~~~~~~~~~~~~~~~~~~
-* **Fast‑Forward binaries**: The script does *not* run FF/Metric‑FF itself, but
-  it prints a ready‑to‑copy command line for each generated test so you can
-  execute the corresponding binary in *binaries/linux*.
-* **Reproducibility**: Provide `--seed <int>` if you wish to reproduce exactly
-  the same random instances.
-* **Output layout** (example for extension 2):
-```
-problems/
-  ext2b/
-    test-cases/
-      tc1/
-        domain.pddl          # copied verbatim from problems/ext2b/domain.pddl
-        menu-ext2b-tc1.pddl  # freshly generated problem instance
-      tc2/
-        ...
-```
-* **Constraints**:  Each generator routine enforces the *syntactic* requirements
-  of its corresponding extension.  Semantic constraints (e.g., "no repeated
-  dish in a week" for ext1, calorie bounds for ext4) are guaranteed *by the
-  domain* once the planner searches for a solution; the problem instance itself
-  just contains the data it needs (objects, predicates, fluents, …).
+# 2 casos només per a ext2 i ext4, llavor fixada
+python3 scripts/generator.py --ext 2 4 --cases 2 --seed 42
 """
 
 from __future__ import annotations
@@ -58,23 +31,29 @@ from pathlib import Path
 from typing import Dict, List, Tuple, Set
 
 # ---------------------------------------------------------------------------
-# Constants & helpers
+# Paths i constants
 # ---------------------------------------------------------------------------
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT_DIR / "data"
 PROBLEMS_DIR = ROOT_DIR / "problems"
-DAYS = ["dilluns", "dimarts", "dimecres", "dijous", "divendres"]
-DUMMY_DAY = "DummyD"  # used from ext2 upwards
-DUMMY_TIPUS = "DummyT"  # used from ext2 upwards
 
-def load_json(filename: str) -> Dict:
-    with open(DATA_DIR / filename, "r", encoding="utf-8") as fh:
+DAYS = ["dilluns", "dimarts", "dimecres", "dijous", "divendres"]
+DUMMY_DAY = "DummyD"   # a partir de l’ext2
+DUMMY_TIPUS = "DummyT"  # a partir de l’ext2
+
+
+# ---------------------------------------------------------------------------
+# Utilitats bàsiques
+# ---------------------------------------------------------------------------
+
+def load_json(fname: str) -> Dict:
+    with open(DATA_DIR / fname, encoding="utf-8") as fh:
         return json.load(fh)
 
 
 def flatten_dishes(cat_dict: Dict[str, Dict[str, Dict]]) -> Dict[str, Dict]:
-    """Return dish_name → {type, calories, preu}."""
+    """Retorna dish → {type, calories, preu}."""
     flat: Dict[str, Dict] = {}
     for t, dishes in cat_dict.items():
         for name, attrs in dishes.items():
@@ -89,37 +68,34 @@ def build_incompat_pairs(
 ) -> List[Tuple[str, str]]:
     pairs: List[Tuple[str, str]] = []
     for p_name, p_data in primers.items():
-        bad_seg_types = incompat_by_type.get(p_data["type"], [])
+        bad_types = incompat_by_type.get(p_data["type"], [])
         for s_name, s_data in segons.items():
-            if s_data["type"] in bad_seg_types:
+            if s_data["type"] in bad_types:
                 pairs.append((p_name, s_name))
     return pairs
 
 
 def choose_subset(items: List[str], k: int) -> List[str]:
-    """Return *k* distinct random items (or all if |items| ≤ k)."""
+    """Torna *k* ítems aleatoris (o tots si len ≤ k)."""
     return random.sample(items, min(k, len(items)))
 
 
 # ---------------------------------------------------------------------------
-# Per‑extension rendering functions
+# Renderitzadors de problema per extensió
 # ---------------------------------------------------------------------------
 
-def render_basic_problem(
-    case_id: int,
-    primers: List[str],
-    segons: List[str],
-    incompat: List[Tuple[str, str]],
-) -> str:
-    tpl = textwrap.dedent(
-        f"""
-        (define (problem menubasicb-tc{case_id})
+def render_basic_problem(case: int,
+                         primers: List[str],
+                         segons: List[str],
+                         incompat: List[Tuple[str, str]]) -> str:
+    tpl = textwrap.dedent(f"""
+        (define (problem menubasicb-tc{case})
           (:domain menubasicb)
 
           (:objects
             {' '.join(DAYS)} - dia
             {' '.join(primers)} - primer
-            {' '.join(segons)} - segon
+            {' '.join(segons)}  - segon
           )
 
           (:init
@@ -128,34 +104,29 @@ def render_basic_problem(
 
           (:goal
             (forall (?d - dia)
-              (diaAmbMenuAsignat ?d)
-            )
+              (diaAmbMenuAsignat ?d))
           )
         )
-        """
-    ).strip()
+    """).strip()
 
-    incompat_lines = "\n            ".join(
+    inc_lines = "\n            ".join(
         f"(incompatible {p} {s})" for p, s in incompat
     )
-    return tpl.replace("{INCOMPAT}", incompat_lines)
+    return tpl.replace("{INCOMPAT}", inc_lines)
 
 
-def render_ext1_problem(
-    case_id: int,
-    primers: List[str],
-    segons: List[str],
-    incompat: List[Tuple[str, str]],
-) -> str:
-    tpl = textwrap.dedent(
-        f"""
-        (define (problem menuext1b-tc{case_id})
+def render_ext1_problem(case: int,
+                        primers: List[str],
+                        segons: List[str],
+                        incompat: List[Tuple[str, str]]) -> str:
+    tpl = textwrap.dedent(f"""
+        (define (problem menuext1b-tc{case})
           (:domain menuext1b)
 
           (:objects
             {' '.join(DAYS)} - dia
             {' '.join(primers)} - primer
-            {' '.join(segons)} - segon
+            {' '.join(segons)}  - segon
           )
 
           (:init
@@ -164,150 +135,94 @@ def render_ext1_problem(
 
           (:goal
             (forall (?d - dia)
-              (and (primerAsignat ?d) (segonAsignat ?d))
-            )
+              (and (primerAsignat ?d) (segonAsignat ?d)))
           )
         )
-        """
-    ).strip()
+    """).strip()
 
-    incompat_lines = "\n            ".join(
+    inc_lines = "\n            ".join(
         f"(incompatible {p} {s})" for p, s in incompat
     )
-    return tpl.replace("{INCOMPAT}", incompat_lines)
+    return tpl.replace("{INCOMPAT}", inc_lines)
 
 
-def render_ext2plus_problem(
-    ext: int,
-    case_id: int,
-    primers: List[str],
-    segons: List[str],
-    tipus_set: Set[str],
-    incompat: List[Tuple[str, str]],
-    plat_tipus: Dict[str, str],
-    required: List[Tuple[str, str]],  # (dish, day)
-    fluents: Dict[str, Dict] | None = None,
-    metric: bool = False,
-) -> str:
-    """Generic renderer for extensions 2—5 (they share a lot)."""
-
+def render_ext2plus_problem(ext: int,
+                            case: int,
+                            primers: List[str],
+                            segons: List[str],
+                            tipus_set: Set[str],
+                            incompat: List[Tuple[str, str]],
+                            plat_tipus: Dict[str, str],
+                            required: List[Tuple[str, str]],
+                            fluents: Dict | None,
+                            metric: bool) -> str:
     domain_name = f"menuext{ext}b"
-    problem_name = f"menuext{ext}b-tc{case_id}"
+    problem_name = f"menuext{ext}b-tc{case}"
 
-    objs_lines = textwrap.dedent(
-        f"""
+    objs_block = textwrap.dedent(f"""
         {' '.join(DAYS + [DUMMY_DAY])} - dia
         {' '.join(primers)} - primer
         {' '.join(segons)} - segon
         {' '.join(sorted(tipus_set | {DUMMY_TIPUS}))} - tipus
-        """
-    ).strip()
+    """).strip()
 
-    incompat_lines = "\n    ".join(
-        f"(incompatible {p} {s})" for p, s in incompat
+    inc_lines = "\n    ".join(f"(incompatible {p} {s})" for p, s in incompat)
+    plat_tipus_lines = "\n    ".join(f"(platTipus {d} {t})" for d, t in plat_tipus.items())
+    dia_seq_lines = "\n    ".join(
+        [f"(diaAnt {DUMMY_DAY} {DAYS[0]})"] +
+        [f"(diaAnt {DAYS[i]} {DAYS[i+1]})" for i in range(len(DAYS)-1)]
     )
-
-    plat_tipus_lines = "\n    ".join(
-        f"(platTipus {dish} {t})" for dish, t in plat_tipus.items()
-    )
-
-    # Day ordering predicates
-    dia_ant_lines = "\n    ".join(
-        [f"(diaAnt {DUMMY_DAY} {DAYS[0]})"]
-        + [f"(diaAnt {DAYS[i]} {DAYS[i+1]})" for i in range(len(DAYS)-1)]
-    )
-
-    # Dummy initial predicates
-    dummy_init_lines = textwrap.dedent(
-        f"""
+    dummy_init = textwrap.dedent(f"""
         (primerAsignat {DUMMY_DAY})
-        (segonAsignat {DUMMY_DAY})
+        (segonAsignat  {DUMMY_DAY})
         (diaPrimerTipus {DUMMY_DAY} {DUMMY_TIPUS})
         (diaSegonTipus  {DUMMY_DAY} {DUMMY_TIPUS})
-        """
-    ).strip()
+    """).strip()
+    required_lines = "\n    ".join(f"(platObligatori {d} {day})" for d, day in required)
 
-    required_lines = "\n    ".join(
-        f"(platObligatori {dish} {day})" for dish, day in required
-    ) if required else ""
-
-    # Fluents (calories / price) — only for ext4 & ext5
-    minmax_lines = ""
-    cal_lines = ""
-    price_lines = ""
-    cost_init_lines = ""
-    metric_line = ""
-
+    # Fluents (ext4/5)
+    minmax, cals, prices, cost_init, metric_line = "", "", "", "", ""
     if fluents:
-        # ext 4 introduces calories; ext 5 adds prices & metric
-        minmax_lines = textwrap.dedent(
-            f"""
-            (= (minCalories) {fluents['cal_min']})
-            (= (maxCalories) {fluents['cal_max']})
-            """
-        ).strip()
-
-        cal_lines = "\n    ".join(
-            [f"(= (calories {dish}) {data['calories']})" for dish, data in fluents["dishes"].items()]
-        )
+        minmax = f"(= (minCalories) {fluents['cal_min']})\n    (= (maxCalories) {fluents['cal_max']})"
+        cals = "\n    ".join(f"(= (calories {d}) {dt['calories']})" for d, dt in fluents["dishes"].items())
         if ext == 5:
-            price_lines = "\n    ".join(
-                [f"(= (preu {dish}) {data['preu']})" for dish, data in fluents["dishes"].items()]
-            )
-            cost_init_lines = textwrap.dedent(
-                """
-                (= (costDiari) 0)
-                (= (costTotal) 0)
-                """
-            ).strip()
+            prices = "\n    ".join(f"(= (preu {d}) {dt['preu']})" for d, dt in fluents["dishes"].items())
+            cost_init = "(= (costDiari) 0)\n    (= (costTotal) 0)"
             metric_line = "\n  (:metric minimize (costTotal))"
 
-    init_blocks = "\n    ".join(
-        x for x in [
-            incompat_lines,
-            plat_tipus_lines,
-            dia_ant_lines,
-            dummy_init_lines,
-            required_lines,
-            minmax_lines,
-            cal_lines,
-            price_lines,
-            cost_init_lines,
-        ] if x
-    )
+    init_parts = "\n    ".join(filter(None, [
+        inc_lines, plat_tipus_lines, dia_seq_lines, dummy_init,
+        required_lines, minmax, cals, prices, cost_init
+    ]))
 
-    tpl = textwrap.dedent(
-        f"""
+    return textwrap.dedent(f"""
         (define (problem {problem_name})
           (:domain {domain_name})
 
           (:objects
-            {objs_lines}
+            {objs_block}
           )
 
           (:init
-            {init_blocks}
+            {init_parts}
           )
 
           (:goal
             (forall (?d - dia)
-              (and (primerAsignat ?d) (segonAsignat ?d))
-            )
+              (and (primerAsignat ?d) (segonAsignat ?d)))
           ){metric_line}
         )
-        """
-    ).strip()
+    """).strip()
 
-    return tpl
 
 # ---------------------------------------------------------------------------
-# Generator per extension — orchestrates the above renderers
+# Generador per extensió
 # ---------------------------------------------------------------------------
 
-def generate_for_extension(ext: int, n_cases: int, rand: random.Random):
-    """Create *n_cases* problem files for extension *ext* (0 → basic, 1..5)."""
+def generate_for_extension(ext: int, n_cases: int, rnd: random.Random):
+    """Genera *n_cases* problemes per a l’extensió *ext* (0 = basic, 1..5)."""
 
-    # ---------- load & preprocess data ----------
+    # --- carrega de dades --------------------------------------------------
     primers_raw = load_json("primers_plats.json")
     segons_raw = load_json("segons_plats.json")
     tipus_map = load_json("tipus.json")["incompatibilitats"]
@@ -315,104 +230,95 @@ def generate_for_extension(ext: int, n_cases: int, rand: random.Random):
 
     primers = flatten_dishes(primers_raw)
     segons = flatten_dishes(segons_raw)
+    all_tipus = {d["type"] for d in primers.values()} | {d["type"] for d in segons.values()}
+    incompat_all = build_incompat_pairs(primers, segons, tipus_map)
 
-    all_tipus = set(primer["type"] for primer in primers.values()) | set(
-        segon["type"] for segon in segons.values()
-    )
-
-    incompat_pairs_all = build_incompat_pairs(primers, segons, tipus_map)
-
-    # ---------- prepare output directory ----------
+    # --- carpetes de sortida ----------------------------------------------
     ext_dir = PROBLEMS_DIR / ("basicb" if ext == 0 else f"ext{ext}b")
     tc_dir = ext_dir / "test-cases"
     tc_dir.mkdir(parents=True, exist_ok=True)
 
-    # Copy domain once (avoid overwriting each time)
-    (tc_dir / "domain.pddl").write_text((ext_dir / "domain.pddl").read_text(), encoding="utf-8")
+    domain_path = ext_dir / "domain.pddl"   # NO es copia, simplement s'usa
 
-    for i in range(1, n_cases + 1):
-        rand.seed(rand.random() * _dt.datetime.now().timestamp())  # re‑seed for variety
+    # --- bucle de generació ------------------------------------------------
+    for case in range(1, n_cases + 1):
+        rnd.seed(rnd.random() * _dt.datetime.now().timestamp())
 
-        # Random subsets – keep sizes reasonable so action grounding is manageable
-        primers_subset = choose_subset(list(primers.keys()), k=10)
-        segons_subset = choose_subset(list(segons.keys()), k=10)
+        primers_sub = choose_subset(list(primers.keys()), 10)
+        segons_sub = choose_subset(list(segons.keys()), 10)
 
-        # Use subset to filter compatibles & attributes
-        primers_sub = {k: primers[k] for k in primers_subset}
-        segons_sub = {k: segons[k] for k in segons_subset}
-
-        incompat_subset = choose_subset(
-            [pair for pair in incompat_pairs_all if pair[0] in primers_sub and pair[1] in segons_sub],
-            k=8,
+        incompat_sub = choose_subset(
+            [p for p in incompat_all if p[0] in primers_sub and p[1] in segons_sub],
+            8
         )
 
-        # Required dishes (ext≥3): choose up to 2 random unique dishes & random days
         required: List[Tuple[str, str]] = []
         if ext >= 3:
-            picks = choose_subset(primers_subset + segons_subset, k=2)
-            rnd_days = rand.sample(DAYS, len(picks))
-            required = list(zip(picks, rnd_days))
+            picks = choose_subset(primers_sub + segons_sub, 2)
+            required = list(zip(picks, rnd.sample(DAYS, len(picks))))
 
-        # Fluents (ext4 & 5)
-        fluents: Dict | None = None
+        fluents = None
         if ext >= 4:
             fluents = {
                 "cal_min": ext_conf["ext4"]["calories_min"],
                 "cal_max": ext_conf["ext4"]["calories_max"],
-                "dishes": {**primers_sub, **segons_sub},
+                "dishes": {**{d: primers[d] for d in primers_sub},
+                           **{d: segons[d] for d in segons_sub}},
             }
 
-        metric_flag = ext == 5
+        plat_tipus_map = {**{d: primers[d]["type"] for d in primers_sub},
+                          **{d: segons[d]["type"] for d in segons_sub}}
 
-        # Render problem text
+        # --- renderitzat ---------------------------------------------------
         if ext == 0:
-            problem_text = render_basic_problem(i, primers_subset, segons_subset, incompat_subset)
+            problem_txt = render_basic_problem(case, primers_sub, segons_sub, incompat_sub)
+            fname = f"menu-basicb-tc{case}.pddl"
         elif ext == 1:
-            problem_text = render_ext1_problem(i, primers_subset, segons_subset, incompat_subset)
+            problem_txt = render_ext1_problem(case, primers_sub, segons_sub, incompat_sub)
+            fname = f"menu-ext1b-tc{case}.pddl"
         else:
-            problem_text = render_ext2plus_problem(
-                ext,
-                i,
-                primers_subset,
-                segons_subset,
-                all_tipus,
-                incompat_subset,
-                {**{d: primers[d]["type"] for d in primers_subset}, **{d: segons[d]["type"] for d in segons_subset}},
-                required,
-                fluents,
-                metric_flag,
+            problem_txt = render_ext2plus_problem(
+                ext, case, primers_sub, segons_sub, all_tipus,
+                incompat_sub, plat_tipus_map, required, fluents, metric=(ext == 5)
             )
+            fname = f"menu-ext{ext}b-tc{case}.pddl"
 
-        out_path = tc_dir / f"menu-ext{ext if ext else 'basic'}b-tc{i}.pddl"
-        out_path.write_text(problem_text, encoding="utf-8")
-        print(f"✅  Extension {ext} – test‑case {i} written → {out_path.relative_to(ROOT_DIR)}")
-        # Convenience: show suggested FF command
+        out_path = tc_dir / fname
+        out_path.write_text(problem_txt, encoding="utf-8")
+
+        print(f"✅  Ext {ext} – cas {case} → {out_path.relative_to(ROOT_DIR)}")
+
+        # consell d'execució FF
         bin_name = "metric-ff" if ext >= 4 else "ff"
-        print("   ▶ run:", f"binaries/linux/{bin_name} -{'O' if ext==5 else ''} -o {out_path.parent/'domain.pddl'} -f {out_path}")
+        opt_flag = "-O " if ext == 5 else ""
+        print("   ▶ run:",
+              f"binaries/linux/{bin_name} {opt_flag}-o {domain_path} -f {out_path}")
 
 
 # ---------------------------------------------------------------------------
-# CLI entry‑point
+# CLI
 # ---------------------------------------------------------------------------
 
 def parse_args():
-    ap = argparse.ArgumentParser(description="Generate random PDDL test cases for menu‑planning practice.")
-    group = ap.add_mutually_exclusive_group(required=True)
-    group.add_argument("--all", action="store_true", help="generate for all extensions (0–5)")
-    group.add_argument("--ext", nargs="*", type=int, choices=range(0, 6), metavar="N",
-                       help="generate only for the specified extensions (0–5)")
-    ap.add_argument("--cases", type=int, default=1, help="number of cases per extension (default 1)")
-    ap.add_argument("--seed", type=int, help="random seed for reproducibility")
-    return ap.parse_args()
+    p = argparse.ArgumentParser(description="Genera casos de prova PDDL aleatoris.")
+    g = p.add_mutually_exclusive_group(required=True)
+    g.add_argument("--all", action="store_true",
+                   help="totes les extensions (0…5)")
+    g.add_argument("--ext", nargs="*", type=int, choices=range(0, 6),
+                   metavar="N", help="extensions específiques")
+    p.add_argument("--cases", type=int, default=1,
+                   help="casos per extensió (def. 1)")
+    p.add_argument("--seed", type=int, help="llavor aleatòria")
+    return p.parse_args()
 
 
 def main():
     args = parse_args()
-    rand = random.Random(args.seed)
+    rnd = random.Random(args.seed)
 
-    targets = list(range(0, 6)) if args.all else args.ext
+    targets = list(range(6)) if args.all else args.ext
     for ext in targets:
-        generate_for_extension(ext, args.cases, rand)
+        generate_for_extension(ext, args.cases, rnd)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,55 @@
+(define (problem menuext2b-tc3)
+          (:domain menuext2b)
+
+          (:objects
+            dilluns dimarts dimecres dijous divendres DummyD - dia
+amanida_fasols crema_de_bolets sopa_de_marisc sopa_de_cigrons crema_de_carxofa amanida_de_cogombre sopa_verdures brocoli_allada escalivada_verdures crema_de_carbassa - primer
+pollastre_a_la_planxa sopa_ceba cuixa_ànec sopa_de_peix llenguado_amb_lima curry_verdures crema_avellana faves_estofades truita_de_llenties crema_de_limon - segon
+DummyT amanida carn crema llegums pasta peix sopa verdures - tipus
+          )
+
+          (:init
+            (incompatible crema_de_bolets pollastre_a_la_planxa)
+    (incompatible brocoli_allada pollastre_a_la_planxa)
+    (incompatible amanida_de_cogombre pollastre_a_la_planxa)
+    (incompatible crema_de_carbassa cuixa_ànec)
+    (incompatible crema_de_bolets cuixa_ànec)
+    (incompatible brocoli_allada sopa_ceba)
+    (incompatible crema_de_carbassa llenguado_amb_lima)
+    (incompatible escalivada_verdures pollastre_a_la_planxa)
+    (platTipus amanida_fasols llegums)
+    (platTipus crema_de_bolets crema)
+    (platTipus sopa_de_marisc sopa)
+    (platTipus sopa_de_cigrons sopa)
+    (platTipus crema_de_carxofa crema)
+    (platTipus amanida_de_cogombre amanida)
+    (platTipus sopa_verdures sopa)
+    (platTipus brocoli_allada verdures)
+    (platTipus escalivada_verdures verdures)
+    (platTipus crema_de_carbassa crema)
+    (platTipus pollastre_a_la_planxa carn)
+    (platTipus sopa_ceba sopa)
+    (platTipus cuixa_ànec carn)
+    (platTipus sopa_de_peix sopa)
+    (platTipus llenguado_amb_lima peix)
+    (platTipus curry_verdures verdures)
+    (platTipus crema_avellana crema)
+    (platTipus faves_estofades llegums)
+    (platTipus truita_de_llenties llegums)
+    (platTipus crema_de_limon crema)
+    (diaAnt DummyD dilluns)
+    (diaAnt dilluns dimarts)
+    (diaAnt dimarts dimecres)
+    (diaAnt dimecres dijous)
+    (diaAnt dijous divendres)
+    (primerAsignat DummyD)
+(segonAsignat  DummyD)
+(diaPrimerTipus DummyD DummyT)
+(diaSegonTipus  DummyD DummyT)
+          )
+
+          (:goal
+            (forall (?d - dia)
+              (and (primerAsignat ?d) (segonAsignat ?d)))
+          )
+        )

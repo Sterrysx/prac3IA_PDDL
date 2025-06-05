@@ -1,0 +1,57 @@
+(define (problem menuext3b-tc4)
+          (:domain menuext3b)
+
+          (:objects
+            dilluns dimarts dimecres dijous divendres DummyD - dia
+sopa_verdures truita_potatge verdures_a_la_planxa amanida_de_cogombre verdures_amb_salsa fajitas_verdures crema_de_bolets amanida_asiatica sopa_de_peix sopa_de_marisc - primer
+faves_estofades xai_rostit bacalla_amb_tomate hamburguesa_mongeta orata_forno estofat_soja botifarra_a_la_planxa sopa_de_galets tataki_verdures sopa_de_pedra - segon
+DummyT amanida carn crema llegums pasta peix sopa verdures - tipus
+          )
+
+          (:init
+            (incompatible crema_de_bolets orata_forno)
+    (incompatible crema_de_bolets botifarra_a_la_planxa)
+    (incompatible amanida_asiatica botifarra_a_la_planxa)
+    (incompatible sopa_de_peix tataki_verdures)
+    (incompatible verdures_amb_salsa sopa_de_galets)
+    (incompatible truita_potatge orata_forno)
+    (incompatible verdures_a_la_planxa sopa_de_pedra)
+    (incompatible verdures_amb_salsa xai_rostit)
+    (platTipus sopa_verdures sopa)
+    (platTipus truita_potatge llegums)
+    (platTipus verdures_a_la_planxa verdures)
+    (platTipus amanida_de_cogombre amanida)
+    (platTipus verdures_amb_salsa verdures)
+    (platTipus fajitas_verdures verdures)
+    (platTipus crema_de_bolets crema)
+    (platTipus amanida_asiatica amanida)
+    (platTipus sopa_de_peix sopa)
+    (platTipus sopa_de_marisc sopa)
+    (platTipus faves_estofades llegums)
+    (platTipus xai_rostit carn)
+    (platTipus bacalla_amb_tomate peix)
+    (platTipus hamburguesa_mongeta llegums)
+    (platTipus orata_forno peix)
+    (platTipus estofat_soja llegums)
+    (platTipus botifarra_a_la_planxa carn)
+    (platTipus sopa_de_galets sopa)
+    (platTipus tataki_verdures verdures)
+    (platTipus sopa_de_pedra sopa)
+    (diaAnt DummyD dilluns)
+    (diaAnt dilluns dimarts)
+    (diaAnt dimarts dimecres)
+    (diaAnt dimecres dijous)
+    (diaAnt dijous divendres)
+    (primerAsignat DummyD)
+(segonAsignat  DummyD)
+(diaPrimerTipus DummyD DummyT)
+(diaSegonTipus  DummyD DummyT)
+    (platObligatori tataki_verdures dimarts)
+    (platObligatori orata_forno dijous)
+          )
+
+          (:goal
+            (forall (?d - dia)
+              (and (primerAsignat ?d) (segonAsignat ?d)))
+          )
+        )

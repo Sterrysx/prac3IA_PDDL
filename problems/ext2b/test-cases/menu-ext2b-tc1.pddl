@@ -1,0 +1,55 @@
+(define (problem menuext2b-tc1)
+          (:domain menuext2b)
+
+          (:objects
+            dilluns dimarts dimecres dijous divendres DummyD - dia
+brocoli_allada sopa_de_marisc macarrons_forn amanida_fasols verdures_amb_salsa amanida_de_tomaquet cigrons_saltejats sopa_de_cigrons escalivada_verdures amanida_quinoa - primer
+sopa_ceba xai_rostit sopa_de_pedra filet_porc wok_verdures truita_de_llenties crema_de_limon orata_forno sopa_ajo estofat_soja - segon
+DummyT amanida carn crema llegums pasta peix sopa verdures - tipus
+          )
+
+          (:init
+            (incompatible verdures_amb_salsa filet_porc)
+    (incompatible cigrons_saltejats orata_forno)
+    (incompatible amanida_de_tomaquet xai_rostit)
+    (incompatible verdures_amb_salsa sopa_de_pedra)
+    (incompatible verdures_amb_salsa sopa_ajo)
+    (incompatible escalivada_verdures sopa_de_pedra)
+    (incompatible amanida_fasols orata_forno)
+    (incompatible escalivada_verdures xai_rostit)
+    (platTipus brocoli_allada verdures)
+    (platTipus sopa_de_marisc sopa)
+    (platTipus macarrons_forn pasta)
+    (platTipus amanida_fasols llegums)
+    (platTipus verdures_amb_salsa verdures)
+    (platTipus amanida_de_tomaquet amanida)
+    (platTipus cigrons_saltejats llegums)
+    (platTipus sopa_de_cigrons sopa)
+    (platTipus escalivada_verdures verdures)
+    (platTipus amanida_quinoa amanida)
+    (platTipus sopa_ceba sopa)
+    (platTipus xai_rostit carn)
+    (platTipus sopa_de_pedra sopa)
+    (platTipus filet_porc carn)
+    (platTipus wok_verdures verdures)
+    (platTipus truita_de_llenties llegums)
+    (platTipus crema_de_limon crema)
+    (platTipus orata_forno peix)
+    (platTipus sopa_ajo sopa)
+    (platTipus estofat_soja llegums)
+    (diaAnt DummyD dilluns)
+    (diaAnt dilluns dimarts)
+    (diaAnt dimarts dimecres)
+    (diaAnt dimecres dijous)
+    (diaAnt dijous divendres)
+    (primerAsignat DummyD)
+(segonAsignat  DummyD)
+(diaPrimerTipus DummyD DummyT)
+(diaSegonTipus  DummyD DummyT)
+          )
+
+          (:goal
+            (forall (?d - dia)
+              (and (primerAsignat ?d) (segonAsignat ?d)))
+          )
+        )
