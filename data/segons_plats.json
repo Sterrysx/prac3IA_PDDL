@@ -18,11 +18,11 @@
     "xai_rostit":           { "calories": 1000, "preu": 9 },
     "botifarra_a_la_planxa":{ "calories": 880, "preu": 7 },
     "filet_porc":           { "calories": 900, "preu": 8 },
-    "cuixa_ànec":           { "calories": 980, "preu": 9 }
+    "cuixa_anec":           { "calories": 980, "preu": 9 }
   },
   "peix": {
     "llenguado_amb_lima":   { "calories": 750, "preu": 8 },
-    "bacalla_amb_tomate":   { "calories": 810, "preu": 7 },
+    "bacalla_amb_tomaquet":   { "calories": 810, "preu": 7 },
     "salmo_grillat":        { "calories": 780, "preu": 9 },
     "orata_forno":          { "calories": 800, "preu": 8 },
     "turbot_planxa":        { "calories": 790, "preu": 8 }

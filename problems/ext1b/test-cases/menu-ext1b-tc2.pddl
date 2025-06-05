@@ -3,19 +3,19 @@
 
   (:objects
     dilluns dimarts dimecres dijous divendres - dia
-    hummus crema_de_carxofa penne_arrabiata gnocchi_pesto amanida_de_tomaquet cigrons_saltejats macarrons_forn crema_espinacs tallarins_carbonara estofat_llenties - primer
-    crema_de_xocolata turbot_planxa wok_verdures pollastre_a_la_planxa filet_porc truita_verdures sopa_de_galets faves_estofades salmo_grillat botifarra_a_la_planxa  - segon
+    verdures_a_la_planxa sopa_de_peix crema_de_carbassa fajitas_verdures estofat_llenties truita_potatge amanida_catalana amanida_de_cogombre sopa_de_cigrons cigrons_saltejats - primer
+    crema_de_xocolata wok_verdures sopa_de_peix llenguado_amb_lima xai_rostit sopa_ajo crema_avellana estofat_soja crema_de_limon truita_verdures  - segon
   )
 
   (:init
-    (incompatible crema_de_carxofa turbot_planxa)
-            (incompatible crema_espinacs pollastre_a_la_planxa)
-            (incompatible crema_espinacs filet_porc)
-            (incompatible amanida_de_tomaquet pollastre_a_la_planxa)
-            (incompatible hummus salmo_grillat)
-            (incompatible estofat_llenties salmo_grillat)
-            (incompatible estofat_llenties turbot_planxa)
-            (incompatible crema_de_carxofa pollastre_a_la_planxa)
+    (incompatible crema_de_carbassa xai_rostit)
+            (incompatible amanida_catalana xai_rostit)
+            (incompatible fajitas_verdures sopa_de_peix)
+            (incompatible verdures_a_la_planxa sopa_ajo)
+            (incompatible verdures_a_la_planxa xai_rostit)
+            (incompatible amanida_de_cogombre xai_rostit)
+            (incompatible crema_de_carbassa llenguado_amb_lima)
+            (incompatible fajitas_verdures xai_rostit)
   )
 
   (:goal

@@ -1,73 +1,68 @@
 #!/usr/bin/env bash
 # ---------------------------------------------------------------------------
-# run_all.sh — ejecuta todos los test-cases usando rutas convertidas con wslpath
-#              para que los ejecutables Windows (ff.exe / metricff.exe) funcionen.
-#   • El log se guarda en scripts/run_all.log
-#   • Cada bloque de prueba queda claramente identificado en el log.
+# run_all.sh : executa tots els test-cases de totes les extensions
+#              i mostra un resum d’èxit.
 # ---------------------------------------------------------------------------
 
-set -euo pipefail
+set -u          # error si una variable no està definida
+set -o pipefail # propaga errors dins pipes
 
-# Ajusta esta ruta si tu proyecto está en otro sitio
-ROOT_DIR="/mnt/c/Users/sterr/Desktop/prac3IA_PDDL"
-FF_WIN="$ROOT_DIR/binaries/ff.exe"
-METRIC_FF_WIN="$ROOT_DIR/binaries/metricff.exe"
-GLOBAL_LOG="$ROOT_DIR/scripts/run_all.log"
+# ─── Rutes bàsiques ───────────────────────────────────────────────────────
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+BIN_DIR="$ROOT_DIR/binaries/linux"
+LOG_FILE="$ROOT_DIR/scripts/run_all.log"
 
-# Inicializa el log global
-printf '===== run_all — %s =====\n' "$(date -Iseconds)" > "$GLOBAL_LOG"
-# Duplica la salida del script a pantalla y log
-exec > >(tee -a "$GLOBAL_LOG") 2>&1
+# ─── Inicia log global ────────────────────────────────────────────────────
+printf '===== run_all %s =====\n' "$(date -Iseconds)" > "$LOG_FILE"
+exec  > >(tee -a "$LOG_FILE") 2>&1
+echo
+
+# ─── Paràmetres de control ────────────────────────────────────────────────
+exts=(ext1b ext2b ext3b ext4b ext5b)
 
 total=0
 passed=0
-EXTS=(ext1b ext2b ext3b ext4b ext5b)
 
-echo
-for ext in "${EXTS[@]}"; do
-  CASE_DIR="$ROOT_DIR/problems/$ext/test-case"
-  [[ ! -d "$CASE_DIR" ]] && continue
-  echo "=== Procesando extensión: $ext ==="
+# ─── Bucle principal ──────────────────────────────────────────────────────
+for ext in "${exts[@]}"; do
+  case_dir="$ROOT_DIR/problems/$ext/test-cases"
+  domain="$ROOT_DIR/problems/$ext/domain.pddl"
 
-  for unix_pddl in "$CASE_DIR"/menu-auto-"$ext"-*.pddl; do
-    [[ ! -e "$unix_pddl" ]] && continue
+  [[ ! -d "$case_dir" ]] && { echo "⚠️  No existeix $case_dir"; continue; }
 
-    (( total++ ))
-    NAME=$(basename "$unix_pddl")
+  echo "=== Extension $ext ==="
 
-    # Encabezado por caso
-    echo -e "\n===== $ext / $NAME ====="
+  # Selecciona executable i flags
+  if   [[ "$ext" == "ext5b" ]]; then
+    planner="$BIN_DIR/metric-ff"; extra="-O"
+  elif [[ "$ext" == "ext4b" ]]; then
+    planner="$BIN_DIR/metric-ff"; extra=""
+  else
+    planner="$BIN_DIR/ff";        extra=""
+  fi
 
-    # Ruta Unix al dominio y al problema 
-    unix_domain="$ROOT_DIR/problems/$ext/domain.pddl"
-    # El propio unix_pddl ya es /mnt/c/.../menu-auto-...
-    # Convertimos ambos a Windows con wslpath:
-    win_domain=$(wslpath -w "$unix_domain")
-    win_pddl=$(wslpath -w "$unix_pddl")
+  for pddl in "$case_dir"/*.pddl; do
+    [[ -e "$pddl" ]] || continue   # dir buit?
 
-    if [[ "$ext" == "ext4b" || "$ext" == "ext5b" ]]; then
-      "$METRIC_FF_WIN" -O -o "$win_domain" -f "$win_pddl"
-      CODE=$?
+    ((total++))
+    name=$(basename "$pddl")
+    echo "→ $name"
+
+    if "$planner" $extra -o "$domain" -f "$pddl" >/dev/null; then
+      ((passed++))
+      echo "   ✔ OK"
     else
-      "$FF_WIN" -o "$win_domain" -f "$win_pddl"
-      CODE=$?
-    fi
-
-    if [[ $CODE -eq 0 ]]; then
-      (( passed++ ))
-      echo "[OK]  $NAME"
-    else
-      echo "[FAIL] $NAME  (exit code: $CODE)"
+      echo "   ✘ FAIL (exit $?)"
     fi
   done
-
   echo
 done
 
-echo "—————————————————————————————"
-echo "Total tests: $total"
-echo "Tests pasados: $passed"
-if [[ $total -gt 0 ]]; then
-  pct=$(( passed * 100 / total ))
-  echo "Porcentaje de éxito: $pct %"
+# ─── Resum ────────────────────────────────────────────────────────────────
+echo "────────────── RESULTATS ──────────────"
+echo "Total tests   : $total"
+echo "Passats       : $passed"
+if (( total > 0 )); then
+  pct=$(( 100 * passed / total ))
+  echo "Percentatge   : $pct %"
 fi

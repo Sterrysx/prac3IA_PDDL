@@ -3,19 +3,19 @@
 
   (:objects
     dilluns dimarts dimecres dijous divendres - dia
-    amanida_catalana sopa_de_marisc crema_de_carabasso cigrons_saltejats penne_arrabiata sopa_de_cigrons crema_de_carbassa truita_potatge raviolis_ricotta amanida_quinoa - primer
-    faves_estofades truita_de_llenties crema_de_limon sopa_de_galets truita_verdures parrillada_verdures cuixa_ànec llenguado_amb_lima filet_porc estofat_soja  - segon
+    sopa_de_marisc crema_de_carabasso crema_espinacs amanida_catalana hummus amanida_de_cogombre sopa_de_cigrons macarrons_forn crema_de_carxofa sopa_de_peix - primer
+    sopa_ceba tataki_verdures llenguado_amb_lima cuixa_anec pollastre_a_la_planxa truita_verdures botifarra_a_la_planxa sopa_de_pedra truita_de_llenties sopa_de_galets  - segon
   )
 
   (:init
-    (incompatible crema_de_carbassa filet_porc)
-            (incompatible amanida_catalana cuixa_ànec)
-            (incompatible crema_de_carbassa llenguado_amb_lima)
-            (incompatible penne_arrabiata crema_de_limon)
-            (incompatible crema_de_carbassa cuixa_ànec)
-            (incompatible amanida_quinoa llenguado_amb_lima)
+    (incompatible amanida_de_cogombre pollastre_a_la_planxa)
+            (incompatible crema_espinacs llenguado_amb_lima)
+            (incompatible amanida_de_cogombre cuixa_anec)
+            (incompatible crema_espinacs pollastre_a_la_planxa)
             (incompatible amanida_catalana llenguado_amb_lima)
-            (incompatible sopa_de_cigrons parrillada_verdures)
+            (incompatible crema_de_carxofa botifarra_a_la_planxa)
+            (incompatible crema_de_carxofa llenguado_amb_lima)
+            (incompatible sopa_de_cigrons tataki_verdures)
   )
 
   (:goal

@@ -3,19 +3,19 @@
 
   (:objects
     dilluns dimarts dimecres dijous divendres - dia
-    hummus sopa_de_marisc crema_espinacs sopa_de_peix estofat_llenties tallarins_carbonara sopa_verdures amanida_quinoa amanida_de_tomaquet escalivada_verdures - primer
-    bacalla_amb_tomate crema_avellana xai_rostit sopa_de_pedra truita_verdures botifarra_a_la_planxa crema_de_xocolata filet_porc wok_verdures tataki_verdures  - segon
+    penne_arrabiata estofat_llenties sopa_de_cigrons amanida_quinoa cigrons_saltejats verdures_amb_salsa sopa_miso macarrons_forn crema_espinacs gnocchi_pesto - primer
+    hamburguesa_mongeta crema_de_limon sopa_de_pedra estofat_soja sopa_de_peix crema_avellana estofat_cigrons sopa_ceba parrillada_verdures salmo_grillat  - segon
   )
 
   (:init
-    (incompatible amanida_de_tomaquet xai_rostit)
-            (incompatible amanida_de_tomaquet filet_porc)
-            (incompatible escalivada_verdures filet_porc)
-            (incompatible amanida_quinoa filet_porc)
-            (incompatible sopa_de_peix wok_verdures)
-            (incompatible crema_espinacs xai_rostit)
-            (incompatible amanida_de_tomaquet botifarra_a_la_planxa)
-            (incompatible sopa_verdures tataki_verdures)
+    (incompatible penne_arrabiata crema_avellana)
+            (incompatible gnocchi_pesto crema_avellana)
+            (incompatible penne_arrabiata crema_de_limon)
+            (incompatible sopa_de_cigrons parrillada_verdures)
+            (incompatible estofat_llenties salmo_grillat)
+            (incompatible macarrons_forn crema_de_limon)
+            (incompatible amanida_quinoa salmo_grillat)
+            (incompatible verdures_amb_salsa sopa_de_peix)
   )
 
   (:goal
