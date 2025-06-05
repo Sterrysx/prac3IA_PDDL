@@ -3,19 +3,19 @@
 
   (:objects
     dilluns dimarts dimecres dijous divendres - dia
-    tallarins_carbonara crema_de_carxofa gnocchi_pesto hummus sopa_miso sopa_de_cigrons sopa_de_marisc sopa_verdures crema_de_bolets truita_potatge - primer
-    hamburguesa_mongeta cuixa_anec truita_de_llenties bacalla_amb_tomaquet estofat_cigrons parrillada_verdures estofat_soja xai_rostit crema_de_xocolata wok_verdures  - segon
+    tallarins_carbonara amanida_de_cogombre sopa_verdures truita_potatge amanida_catalana verdures_a_la_planxa cigrons_saltejats crema_de_carabasso verdures_amb_salsa sopa_de_cigrons - primer
+    hamburguesa_mongeta faves_estofades sopa_de_pedra curry_verdures crema_taronja crema_de_xocolata parrillada_verdures sopa_de_galets tataki_verdures crema_de_limon  - segon
   )
 
   (:init
-    (incompatible hummus bacalla_amb_tomaquet)
-            (incompatible sopa_miso wok_verdures)
-            (incompatible crema_de_carxofa bacalla_amb_tomaquet)
-            (incompatible crema_de_bolets cuixa_anec)
-            (incompatible crema_de_carxofa xai_rostit)
-            (incompatible tallarins_carbonara crema_de_xocolata)
+    (incompatible sopa_de_cigrons curry_verdures)
+            (incompatible sopa_verdures tataki_verdures)
+            (incompatible verdures_amb_salsa sopa_de_pedra)
+            (incompatible sopa_de_cigrons tataki_verdures)
             (incompatible sopa_verdures parrillada_verdures)
-            (incompatible crema_de_bolets bacalla_amb_tomaquet)
+            (incompatible tallarins_carbonara crema_de_limon)
+            (incompatible verdures_amb_salsa sopa_de_galets)
+            (incompatible sopa_de_cigrons parrillada_verdures)
   )
 
   (:goal

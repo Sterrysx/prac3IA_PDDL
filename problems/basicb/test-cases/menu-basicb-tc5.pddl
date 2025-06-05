@@ -3,19 +3,19 @@
 
   (:objects
     dilluns dimarts dimecres dijous divendres - dia
-    penne_arrabiata amanida_de_tomaquet sopa_de_marisc crema_de_bolets escalivada_verdures amanida_catalana sopa_de_cigrons macarrons_forn sopa_miso verdures_a_la_planxa - primer
-    sopa_ajo filet_porc pollastre_a_la_planxa faves_estofades sopa_de_pedra curry_verdures botifarra_a_la_planxa truita_de_llenties bacalla_amb_tomaquet sopa_de_peix  - segon
+    sopa_de_peix gnocchi_pesto cigrons_saltejats verdures_a_la_planxa crema_de_carxofa amanida_de_cogombre sopa_miso penne_arrabiata amanida_catalana crema_de_carbassa - primer
+    bacalla_amb_tomaquet orata_forno wok_verdures botifarra_a_la_planxa turbot_planxa parrillada_verdures crema_taronja sopa_ceba filet_porc llenguado_amb_lima  - segon
   )
 
   (:init
-    (incompatible amanida_catalana bacalla_amb_tomaquet)
-            (incompatible escalivada_verdures sopa_de_pedra)
-            (incompatible crema_de_bolets bacalla_amb_tomaquet)
+    (incompatible crema_de_carxofa bacalla_amb_tomaquet)
+            (incompatible sopa_de_peix wok_verdures)
+            (incompatible crema_de_carxofa turbot_planxa)
             (incompatible verdures_a_la_planxa filet_porc)
-            (incompatible verdures_a_la_planxa sopa_ajo)
-            (incompatible verdures_a_la_planxa sopa_de_peix)
-            (incompatible verdures_a_la_planxa botifarra_a_la_planxa)
-            (incompatible escalivada_verdures sopa_ajo)
+            (incompatible crema_de_carxofa llenguado_amb_lima)
+            (incompatible cigrons_saltejats orata_forno)
+            (incompatible cigrons_saltejats llenguado_amb_lima)
+            (incompatible amanida_catalana llenguado_amb_lima)
   )
 
   (:goal

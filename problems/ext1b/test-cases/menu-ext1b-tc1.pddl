@@ -3,19 +3,19 @@
 
   (:objects
     dilluns dimarts dimecres dijous divendres - dia
-    verdures_a_la_planxa sopa_verdures amanida_asiatica hummus sopa_de_marisc truita_potatge amanida_de_tomaquet crema_de_carxofa sopa_de_cigrons amanida_de_cogombre - primer
-    filet_porc salmo_grillat cuixa_anec botifarra_a_la_planxa crema_de_limon estofat_cigrons orata_forno curry_verdures crema_avellana sopa_ceba  - segon
+    macarrons_forn verdures_amb_salsa fajitas_verdures crema_de_bolets crema_de_carxofa brocoli_allada truita_potatge sopa_de_marisc escalivada_verdures crema_de_carbassa - primer
+    turbot_planxa crema_de_limon sopa_de_peix crema_catalana hamburguesa_mongeta orata_forno filet_porc tataki_verdures crema_taronja crema_de_xocolata  - segon
   )
 
   (:init
-    (incompatible amanida_de_cogombre filet_porc)
-            (incompatible amanida_asiatica filet_porc)
-            (incompatible amanida_de_cogombre orata_forno)
-            (incompatible crema_de_carxofa salmo_grillat)
-            (incompatible amanida_de_tomaquet cuixa_anec)
-            (incompatible amanida_de_cogombre botifarra_a_la_planxa)
-            (incompatible amanida_de_tomaquet botifarra_a_la_planxa)
-            (incompatible amanida_de_tomaquet salmo_grillat)
+    (incompatible escalivada_verdures filet_porc)
+            (incompatible macarrons_forn crema_catalana)
+            (incompatible brocoli_allada filet_porc)
+            (incompatible crema_de_carxofa orata_forno)
+            (incompatible brocoli_allada sopa_de_peix)
+            (incompatible crema_de_carxofa filet_porc)
+            (incompatible crema_de_carbassa orata_forno)
+            (incompatible crema_de_carbassa turbot_planxa)
   )
 
   (:goal
