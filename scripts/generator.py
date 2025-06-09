@@ -5,12 +5,6 @@ generator.py
 Crea instàncies *aleatòries* de problema PDDL per a totes les extensions
 (basic → ext 5) de la pràctica de planificació de menús.
 
-Canvi destacat (juny 2025)
---------------------------
-・ Ja **no es copia** `domain.pddl` dins de «test-cases/».  
-  El problema generat apunta al domini que ja existeix a
-  `problems/<extXb>/domain.pddl`.
-
 Ús bàsic
 --------
 # 5 casos per a totes les extensions
