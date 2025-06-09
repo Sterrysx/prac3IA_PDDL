@@ -125,11 +125,3 @@ Percentatge   : 97 %
 ```
 
 ---
-
-## Preguntes freqüents
-
-* **P: FF s’atura amb “predicate INCOMPATIBLE is declared to have 2 (not 3) arguments”.**
-  **R:** Assegura’t que tots els noms de plats són ASCII pur (`[A‑Za‑z0‑9_-]`). Accents o espais trenquen la tokenització.
-
-* **P: Metric‑FF no troba el pla òptim?**
-  **R:** La cerca `best‑first` pot acabar amb un pla vàlid però no mínim. Torna a executar‑lo o ajusta els paràmetres d’heurística si cal.
